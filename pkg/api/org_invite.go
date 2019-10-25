@@ -5,8 +5,6 @@ import (
 
 	"github.com/grafana/grafana/pkg/api/dtos"
 	"github.com/grafana/grafana/pkg/bus"
-	"github.com/grafana/grafana/pkg/events"
-	"github.com/grafana/grafana/pkg/infra/metrics"
 	m "github.com/grafana/grafana/pkg/models"
 	"github.com/grafana/grafana/pkg/setting"
 	"github.com/grafana/grafana/pkg/util"
@@ -122,82 +120,6 @@ func inviteExistingUserToOrg(c *m.ReqContext, user *m.User, inviteDto *dtos.AddI
 	}
 
 	return Success(fmt.Sprintf("Existing Grafana user %s added to org %s", user.NameOrFallback(), c.OrgName))
-}
-
-func RevokeInvite(c *m.ReqContext) Response {
-	if ok, rsp := updateTempUserStatus(c.Params(":code"), m.TmpUserRevoked); !ok {
-		return rsp
-	}
-
-	return Success("Invite revoked")
-}
-
-func GetInviteInfoByCode(c *m.ReqContext) Response {
-	query := m.GetTempUserByCodeQuery{Code: c.Params(":code")}
-
-	if err := bus.Dispatch(&query); err != nil {
-		if err == m.ErrTempUserNotFound {
-			return Error(404, "Invite not found", nil)
-		}
-		return Error(500, "Failed to get invite", err)
-	}
-
-	invite := query.Result
-
-	return JSON(200, dtos.InviteInfo{
-		Email:     invite.Email,
-		Name:      invite.Name,
-		Username:  invite.Email,
-		InvitedBy: util.StringsFallback3(invite.InvitedByName, invite.InvitedByLogin, invite.InvitedByEmail),
-	})
-}
-
-func (hs *HTTPServer) CompleteInvite(c *m.ReqContext, completeInvite dtos.CompleteInviteForm) Response {
-	query := m.GetTempUserByCodeQuery{Code: completeInvite.InviteCode}
-
-	if err := bus.Dispatch(&query); err != nil {
-		if err == m.ErrTempUserNotFound {
-			return Error(404, "Invite not found", nil)
-		}
-		return Error(500, "Failed to get invite", err)
-	}
-
-	invite := query.Result
-	if invite.Status != m.TmpUserInvitePending {
-		return Error(412, fmt.Sprintf("Invite cannot be used in status %s", invite.Status), nil)
-	}
-
-	cmd := m.CreateUserCommand{
-		Email:        completeInvite.Email,
-		Name:         completeInvite.Name,
-		Login:        completeInvite.Username,
-		Password:     completeInvite.Password,
-		SkipOrgSetup: true,
-	}
-
-	if err := bus.Dispatch(&cmd); err != nil {
-		return Error(500, "failed to create user", err)
-	}
-
-	user := &cmd.Result
-
-	if err := bus.Publish(&events.SignUpCompleted{
-		Name:  user.NameOrFallback(),
-		Email: user.Email,
-	}); err != nil {
-		return Error(500, "failed to publish event", err)
-	}
-
-	if ok, rsp := applyUserInvite(user, invite, true); !ok {
-		return rsp
-	}
-
-	hs.loginUserWithUser(user, c)
-
-	metrics.MApiUserSignUpCompleted.Inc()
-	metrics.MApiUserSignUpInvite.Inc()
-
-	return Success("User created and logged in")
 }
 
 func updateTempUserStatus(code string, status m.TempUserStatus) (bool, Response) {

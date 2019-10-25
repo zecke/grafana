@@ -23,13 +23,6 @@ func (hs *HTTPServer) registerRoutes() {
 
 	r := hs.RouteRegister
 
-	// not logged in views
-	r.Get("/logout", hs.Logout)
-	r.Post("/login", quota("session"), bind(dtos.LoginCommand{}), Wrap(hs.LoginPost))
-	r.Get("/login/:name", quota("session"), hs.OAuthLogin)
-	r.Get("/login", hs.LoginView)
-	r.Get("/invite/:code", hs.Index)
-
 	// authed views
 	r.Get("/profile/", reqSignedIn, hs.Index)
 	r.Get("/profile/password", reqSignedIn, hs.Index)
@@ -85,16 +78,6 @@ func (hs *HTTPServer) registerRoutes() {
 	r.Get("/alerting/", reqEditorRole, hs.Index)
 	r.Get("/alerting/*", reqEditorRole, hs.Index)
 
-	// sign up
-	r.Get("/signup", hs.Index)
-	r.Get("/api/user/signup/options", Wrap(GetSignUpOptions))
-	r.Post("/api/user/signup", quota("user"), bind(dtos.SignUpForm{}), Wrap(SignUp))
-	r.Post("/api/user/signup/step2", bind(dtos.SignUpStep2Form{}), Wrap(hs.SignUpStep2))
-
-	// invited
-	r.Get("/api/user/invite/:code", Wrap(GetInviteInfoByCode))
-	r.Post("/api/user/invite/complete", bind(dtos.CompleteInviteForm{}), Wrap(hs.CompleteInvite))
-
 	// reset password
 	r.Get("/user/password/send-reset-email", hs.Index)
 	r.Get("/user/password/reset", hs.Index)
@@ -105,9 +88,6 @@ func (hs *HTTPServer) registerRoutes() {
 	// dashboard snapshots
 	r.Get("/dashboard/snapshot/*", hs.Index)
 	r.Get("/dashboard/snapshots/", reqSignedIn, hs.Index)
-
-	// api renew session based on cookie
-	r.Get("/api/login/ping", quota("session"), Wrap(hs.LoginAPIPing))
 
 	// authed api
 	r.Group("/api", func(apiRoute routing.RouteRegister) {
@@ -186,7 +166,6 @@ func (hs *HTTPServer) registerRoutes() {
 			// invites
 			orgRoute.Get("/invites", Wrap(GetPendingOrgInvites))
 			orgRoute.Post("/invites", quota("user"), bind(dtos.AddInviteForm{}), Wrap(AddOrgInvite))
-			orgRoute.Patch("/invites/:code/revoke", Wrap(RevokeInvite))
 
 			// prefs
 			orgRoute.Get("/preferences", Wrap(GetOrgPreferences))
