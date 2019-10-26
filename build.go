@@ -40,7 +40,6 @@ var (
 	linuxPackageVersion   string = "v1"
 	linuxPackageIteration string = ""
 	race                  bool
-	phjsToRelease         string
 	workingDir            string
 	includeBuildId        bool     = true
 	buildId               string   = "0"
@@ -68,7 +67,6 @@ func main() {
 	flag.StringVar(&libc, "libc", "", "LIBC")
 	flag.BoolVar(&cgo, "cgo-enabled", cgo, "Enable cgo")
 	flag.StringVar(&pkgArch, "pkg-arch", "", "PKG ARCH")
-	flag.StringVar(&phjsToRelease, "phjs", "", "PhantomJS binary")
 	flag.BoolVar(&race, "race", race, "Use race detector")
 	flag.BoolVar(&includeBuildId, "includeBuildId", includeBuildId, "IncludeBuildId in package name")
 	flag.BoolVar(&enterprise, "enterprise", enterprise, "Build enterprise version of Grafana")
@@ -456,9 +454,6 @@ func gruntBuildArg(task string) []string {
 	}
 	if libc != "" {
 		args = append(args, fmt.Sprintf("--libc=%s", libc))
-	}
-	if phjsToRelease != "" {
-		args = append(args, fmt.Sprintf("--phjsToRelease=%v", phjsToRelease))
 	}
 	if enterprise {
 		args = append(args, "--enterprise")
