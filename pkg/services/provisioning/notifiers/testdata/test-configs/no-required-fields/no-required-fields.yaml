@@ -1,5 +1,5 @@
 notifiers:
-  - type: slack
+  - type: prometheus-alertmanager
     org_id: 2
     uid: no-name_added-notification
     is_default: true
@@ -8,7 +8,7 @@ notifiers:
       token: "xoxb"
       uploadImage: true
   - name: no-uid 
-    type: slack
+    type: prometheus-alertmanager
     org_id: 2    
     is_default: true
     settings:
@@ -17,14 +17,14 @@ notifiers:
       uploadImage: true
 delete_notifiers:
   - name: no-uid 
-    type: slack
+    type: prometheus-alertmanager
     org_id: 2    
     is_default: true
     settings:
       recipient: "XXX"
       token: "xoxb"
       uploadImage: true
-  - type: slack
+  - type: prometheus-alertmanager
     org_id: 2
     uid: no-name_added-notification
     is_default: true

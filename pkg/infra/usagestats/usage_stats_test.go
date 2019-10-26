@@ -127,12 +127,8 @@ func TestMetrics(t *testing.T) {
 		uss.Bus.AddHandler(func(query *models.GetAlertNotifierUsageStatsQuery) error {
 			query.Result = []*models.NotifierUsageStats{
 				{
-					Type:  "slack",
+					Type:  "prometheus-alertmanager",
 					Count: 1,
-				},
-				{
-					Type:  "webhook",
-					Count: 2,
 				},
 			}
 
@@ -242,8 +238,7 @@ func TestMetrics(t *testing.T) {
 				So(metrics.Get("stats.ds_access.other.direct.count").MustInt(), ShouldEqual, 6+7)
 				So(metrics.Get("stats.ds_access.other.proxy.count").MustInt(), ShouldEqual, 4+8)
 
-				So(metrics.Get("stats.alert_notifiers.slack.count").MustInt(), ShouldEqual, 1)
-				So(metrics.Get("stats.alert_notifiers.webhook.count").MustInt(), ShouldEqual, 2)
+				So(metrics.Get("stats.alert_notifiers.prometheus-alertmanager.count").MustInt(), ShouldEqual, 1)
 
 				So(metrics.Get("stats.auth_enabled.anonymous.count").MustInt(), ShouldEqual, 1)
 				So(metrics.Get("stats.auth_enabled.basic_auth.count").MustInt(), ShouldEqual, 1)

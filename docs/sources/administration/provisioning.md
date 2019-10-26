@@ -289,7 +289,7 @@ By default, exporting a dashboard as JSON will use a sequential identifier to re
 ```yaml
 notifiers:
   - name: notification-channel-1
-    type: slack
+    type: prometheus-alertmanager
     uid: notifier1
     # either
     org_id: 2
@@ -302,10 +302,7 @@ notifiers:
     # See `Supported Settings` section for settings supporter for each
     # alert notification type.
     settings:
-      recipient: "XXX"
-      token: "xoxb"
-      uploadImage: true
-      url: https://slack.com
+      url: http://alertmanager
 
 delete_notifiers:
   - name: notification-channel-1
@@ -322,132 +319,8 @@ delete_notifiers:
 
 The following sections detail the supported settings for each alert notification type.
 
-#### Alert notification `pushover`
-
-| Name |
-| ---- |
-| apiToken |
-| userKey |
-| device |
-| retry |
-| expire |
-
-#### Alert notification `slack`
-
-| Name |
-| ---- |
-| url |
-| recipient |
-| username |
-| iconEmoji |
-| iconUrl |
-| uploadImage |
-| mention |
-| token |
-
-#### Alert notification `victorops`
-
-| Name |
-| ---- |
-| url |
-| autoResolve |
-
-#### Alert notification `kafka`
-
-| Name |
-| ---- |
-| kafkaRestProxy |
-| kafkaTopic |
-
-#### Alert notification `LINE`
-
-| Name |
-| ---- |
-| token |
-
-#### Alert notification `pagerduty`
-
-| Name |
-| ---- |
-| integrationKey |
-| autoResolve |
-
-#### Alert notification `sensu`
-
-| Name |
-| ---- |
-| url |
-| source |
-| handler |
-| username |
-| password |
-
 #### Alert notification `prometheus-alertmanager`
 
 | Name |
 | ---- |
 | url |
-
-#### Alert notification `teams`
-
-| Name |
-| ---- |
-| url |
-
-#### Alert notification `dingding`
-
-| Name |
-| ---- |
-| url |
-
-#### Alert notification `email`
-
-| Name |
-| ---- |
-| addresses |
-
-#### Alert notification `hipchat`
-
-| Name |
-| ---- |
-| url |
-| apikey |
-| roomid |
-
-#### Alert notification `opsgenie`
-
-| Name |
-| ---- |
-| apiKey |
-| apiUrl |
-| autoClose |
-
-#### Alert notification `telegram`
-
-| Name |
-| ---- |
-| bottoken |
-| chatid |
-
-#### Alert notification `threema`
-
-| Name |
-| ---- |
-| gateway_id |
-| recipient_id |
-| api_secret |
-
-#### Alert notification `webhook`
-
-| Name |
-| ---- |
-| url |
-| username |
-| password |
-
-#### Alert notification `googlechat`
-
-| Name |
-| ---- |
-| url |
-

@@ -95,28 +95,6 @@ export class AlertTabCtrl {
   }
 
   getNotificationIcon(type: string): string {
-    switch (type) {
-      case 'email':
-        return 'fa fa-envelope';
-      case 'slack':
-        return 'fa fa-slack';
-      case 'victorops':
-        return 'fa fa-pagelines';
-      case 'webhook':
-        return 'fa fa-cubes';
-      case 'pagerduty':
-        return 'fa fa-bullhorn';
-      case 'opsgenie':
-        return 'fa fa-bell';
-      case 'hipchat':
-        return 'fa fa-mail-forward';
-      case 'pushover':
-        return 'fa fa-mobile';
-      case 'kafka':
-        return 'fa fa-random';
-      case 'teams':
-        return 'fa fa-windows';
-    }
     return 'fa fa-bell';
   }
 

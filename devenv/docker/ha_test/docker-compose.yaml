@@ -75,7 +75,7 @@ services:
       # - GF_SESSION_PROVIDER_CONFIG=user=grafana password=password host=db port=5432 dbname=grafana sslmode=disable
       - GF_SERVER_ROUTER_LOGGING=true
       - GF_LOG_CONSOLE_FORMAT=json
-      - GF_LOG_FILTERS=alerting.notifier:debug,alerting.notifier.slack:debug,auth:debug
+      - GF_LOG_FILTERS=alerting.notifier:debug,auth:debug
       - GF_AUTH_TOKEN_ROTATION_INTERVAL_MINUTES=2
     ports:
       - 3000

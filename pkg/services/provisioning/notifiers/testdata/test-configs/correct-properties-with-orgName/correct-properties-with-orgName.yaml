@@ -1,9 +1,9 @@
 notifiers:
   - name: default-notification-create
-    type: email
+    type: prometheus-alertmanager
     uid: notifier2
     settings:
-      addresses: example@example.com
+      url: https://alertmanager
     org_name: Main Org. 2
     is_default: false  
 delete_notifiers:

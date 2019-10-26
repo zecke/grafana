@@ -1,7 +1,7 @@
 notifiers:
   - name: second-default
-    type: email
+    type: prometheus-alertmanager
     uid: notifier2
     is_default: true
     settings:
-      addresses: example@example.com
+      url: http://alertmanager

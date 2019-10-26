@@ -97,8 +97,8 @@ Content-Type: application/json
   {
     "id": 2,
     "uid": "000000002",
-    "name": "Slack",
-    "type": "slack",
+    "name": "Alrtmanager",
+    "type": "prometheus-alertmanager",
     "isDefault": false
   }
 ]

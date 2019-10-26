@@ -32,15 +32,14 @@ func TestNotificationAsConfig(t *testing.T) {
 		sqlstore.InitTestDB(t)
 
 		alerting.RegisterNotifier(&alerting.NotifierPlugin{
-			Type:    "slack",
-			Name:    "slack",
-			Factory: notifiers.NewSlackNotifier,
+			Type:    "prometheus-alertmanager",
+			Name:    "alertmanager1",
+			Factory: notifiers.NewAlertmanagerNotifier,
 		})
-
 		alerting.RegisterNotifier(&alerting.NotifierPlugin{
-			Type:    "email",
-			Name:    "email",
-			Factory: notifiers.NewEmailNotifier,
+			Type:    "prometheus-alertmanager",
+			Name:    "alertmanager2",
+			Factory: notifiers.NewAlertmanagerNotifier,
 		})
 
 		Convey("Can read correct properties", func() {
@@ -58,34 +57,34 @@ func TestNotificationAsConfig(t *testing.T) {
 			So(len(nts), ShouldEqual, 4)
 
 			nt := nts[0]
-			So(nt.Name, ShouldEqual, "default-slack-notification")
-			So(nt.Type, ShouldEqual, "slack")
+			So(nt.Name, ShouldEqual, "default-alertmanager-notification")
+			So(nt.Type, ShouldEqual, "prometheus-alertmanager")
 			So(nt.OrgId, ShouldEqual, 2)
 			So(nt.Uid, ShouldEqual, "notifier1")
 			So(nt.IsDefault, ShouldBeTrue)
 			So(nt.Settings, ShouldResemble, map[string]interface{}{
-				"recipient": "XXX", "token": "xoxb", "uploadImage": true, "url": "https://slack.com",
+				"url": "http://alertmanager",
 			})
 			So(nt.SendReminder, ShouldBeTrue)
 			So(nt.Frequency, ShouldEqual, "1h")
 
 			nt = nts[1]
 			So(nt.Name, ShouldEqual, "another-not-default-notification")
-			So(nt.Type, ShouldEqual, "email")
+			So(nt.Type, ShouldEqual, "prometheus-alertmanager")
 			So(nt.OrgId, ShouldEqual, 3)
 			So(nt.Uid, ShouldEqual, "notifier2")
 			So(nt.IsDefault, ShouldBeFalse)
 
 			nt = nts[2]
 			So(nt.Name, ShouldEqual, "check-unset-is_default-is-false")
-			So(nt.Type, ShouldEqual, "slack")
+			So(nt.Type, ShouldEqual, "prometheus-alertmanager")
 			So(nt.OrgId, ShouldEqual, 3)
 			So(nt.Uid, ShouldEqual, "notifier3")
 			So(nt.IsDefault, ShouldBeFalse)
 
 			nt = nts[3]
 			So(nt.Name, ShouldEqual, "Added notification with whitespaces in name")
-			So(nt.Type, ShouldEqual, "email")
+			So(nt.Type, ShouldEqual, "prometheus-alertmanager")
 			So(nt.Uid, ShouldEqual, "notifier4")
 			So(nt.OrgId, ShouldEqual, 3)
 
@@ -93,7 +92,7 @@ func TestNotificationAsConfig(t *testing.T) {
 			So(len(deleteNts), ShouldEqual, 4)
 
 			deleteNt := deleteNts[0]
-			So(deleteNt.Name, ShouldEqual, "default-slack-notification")
+			So(deleteNt.Name, ShouldEqual, "default-alertmanager-notification")
 			So(deleteNt.Uid, ShouldEqual, "notifier1")
 			So(deleteNt.OrgId, ShouldEqual, 2)
 
@@ -132,7 +131,7 @@ func TestNotificationAsConfig(t *testing.T) {
 					Name:  "channel1",
 					OrgId: 1,
 					Uid:   "notifier1",
-					Type:  "slack",
+					Type:  "prometheus-alertmanager",
 				}
 				err := sqlstore.CreateAlertNotificationCommand(&existingNotificationCmd)
 				So(err, ShouldBeNil)
@@ -156,12 +155,12 @@ func TestNotificationAsConfig(t *testing.T) {
 
 					nts := notificationsQuery.Result
 					nt1 := nts[0]
-					So(nt1.Type, ShouldEqual, "email")
+					So(nt1.Type, ShouldEqual, "prometheus-alertmanager")
 					So(nt1.Name, ShouldEqual, "channel1")
 					So(nt1.Uid, ShouldEqual, "notifier1")
 
 					nt2 := nts[1]
-					So(nt2.Type, ShouldEqual, "slack")
+					So(nt2.Type, ShouldEqual, "prometheus-alertmanager")
 					So(nt2.Name, ShouldEqual, "channel2")
 					So(nt2.Uid, ShouldEqual, "notifier2")
 				})
@@ -189,7 +188,7 @@ func TestNotificationAsConfig(t *testing.T) {
 					Name:  "channel0",
 					OrgId: 1,
 					Uid:   "notifier0",
-					Type:  "slack",
+					Type:  "prometheus-alertmanager",
 				}
 				err := sqlstore.CreateAlertNotificationCommand(&existingNotificationCmd)
 				So(err, ShouldBeNil)
@@ -197,7 +196,7 @@ func TestNotificationAsConfig(t *testing.T) {
 					Name:  "channel3",
 					OrgId: 1,
 					Uid:   "notifier3",
-					Type:  "slack",
+					Type:  "prometheus-alertmanager",
 				}
 				err = sqlstore.CreateAlertNotificationCommand(&existingNotificationCmd)
 				So(err, ShouldBeNil)
@@ -237,7 +236,7 @@ func TestNotificationAsConfig(t *testing.T) {
 				Name:  "default-notification-delete",
 				OrgId: existingOrg2.Result.Id,
 				Uid:   "notifier2",
-				Type:  "slack",
+				Type:  "prometheus-alertmanager",
 			}
 			err = sqlstore.CreateAlertNotificationCommand(&existingNotificationCmd)
 			So(err, ShouldBeNil)
