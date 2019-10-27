@@ -65,6 +65,7 @@ func GetContextHandler(
 		case initContextWithRenderAuth(ctx):
 		case initContextWithApiKey(ctx):
 		case initContextWithBasicAuth(ctx, orgId):
+		case initContextWithAuthProxy(remoteCache, ctx, orgId):
 		case initContextWithToken(ats, ctx, orgId):
 		case initContextWithAnonymousUser(ctx):
 		}
