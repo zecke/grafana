@@ -1,7 +1,7 @@
 notifiers:
   - name: first-default
-    type: slack
+    type: prometheus-alertmanager
     uid: notifier1
     is_default: true
     settings:
-      url: https://slack.com
+      url: http://alertmanager

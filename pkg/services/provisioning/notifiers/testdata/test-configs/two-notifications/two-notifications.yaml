@@ -1,12 +1,12 @@
 notifiers:  
   - name: channel1
-    type: email
+    type: prometheus-alertmanager
     uid: notifier1
     org_id: 1
     settings:
-      addresses: example@example.com
+      url: http://alertmanager
   - name: channel2
-    type: slack
+    type: prometheus-alertmanager
     uid: notifier2
     settings:
-      url: http://slack.com
+      url: http://alertmanager

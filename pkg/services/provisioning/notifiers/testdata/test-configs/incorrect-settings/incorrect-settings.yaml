@@ -1,6 +1,6 @@
 notifiers:
-  - name: slack-notification-without-url-in-settings
-    type: slack
+  - name: alertmanager-notification-without-url-in-settings
+    type: prometheus-alertmanager
     org_id: 2
     uid: notifier1
     is_default: true

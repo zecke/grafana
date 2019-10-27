@@ -167,10 +167,6 @@ filters = alerting.scheduler:debug \
           alerting.evalContext:debug \
           alerting.extractor:debug \
           alerting.notifier:debug \
-          alerting.notifier.slack:debug \
-          alerting.notifier.pagerduty:debug \
-          alerting.notifier.email:debug \
-          alerting.notifier.webhook:debug \
           tsdb.graphite:debug \
           tsdb.prometheus:debug \
           tsdb.opentsdb:debug \
