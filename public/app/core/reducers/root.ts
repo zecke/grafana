@@ -10,7 +10,6 @@ import dashboardReducers from 'app/features/dashboard/state/reducers';
 import exploreReducers from 'app/features/explore/state/reducers';
 import pluginReducers from 'app/features/plugins/state/reducers';
 import dataSourcesReducers from 'app/features/datasources/state/reducers';
-import usersReducers from 'app/features/users/state/reducers';
 import userReducers from 'app/features/profile/state/reducers';
 import organizationReducers from 'app/features/org/state/reducers';
 import ldapReducers from 'app/features/admin/state/reducers';
@@ -25,7 +24,6 @@ const rootReducers = {
   ...exploreReducers,
   ...pluginReducers,
   ...dataSourcesReducers,
-  ...usersReducers,
   ...userReducers,
   ...organizationReducers,
   ...ldapReducers,

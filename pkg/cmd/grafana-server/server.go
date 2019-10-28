@@ -5,7 +5,6 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
-	"net"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -33,7 +32,6 @@ import (
 	_ "github.com/grafana/grafana/pkg/services/alerting"
 	_ "github.com/grafana/grafana/pkg/services/auth"
 	_ "github.com/grafana/grafana/pkg/services/cleanup"
-	_ "github.com/grafana/grafana/pkg/services/notifications"
 	_ "github.com/grafana/grafana/pkg/services/provisioning"
 	_ "github.com/grafana/grafana/pkg/services/rendering"
 	_ "github.com/grafana/grafana/pkg/services/search"
@@ -152,8 +150,6 @@ func (s *Server) Run() (err error) {
 		}
 	}()
 
-	s.notifySystemd("READY=1")
-
 	return
 }
 
@@ -261,30 +257,4 @@ func (s *Server) loadConfiguration() {
 	)
 
 	s.cfg.LogConfigSources()
-}
-
-// notifySystemd sends state notifications to systemd.
-func (s *Server) notifySystemd(state string) {
-	notifySocket := os.Getenv("NOTIFY_SOCKET")
-	if notifySocket == "" {
-		s.log.Debug(
-			"NOTIFY_SOCKET environment variable empty or unset, can't send systemd notification")
-		return
-	}
-
-	socketAddr := &net.UnixAddr{
-		Name: notifySocket,
-		Net:  "unixgram",
-	}
-	conn, err := net.DialUnix(socketAddr.Net, nil, socketAddr)
-	if err != nil {
-		s.log.Warn("Failed to connect to systemd", "err", err, "socket", notifySocket)
-		return
-	}
-	defer conn.Close()
-
-	_, err = conn.Write([]byte(state))
-	if err != nil {
-		s.log.Warn("Failed to write notification to systemd", "err", err)
-	}
 }

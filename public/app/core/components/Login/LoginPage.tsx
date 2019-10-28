@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { UserSignup } from './UserSignup';
 import { LoginServiceButtons } from './LoginServiceButtons';
 import LoginCtrl from './LoginCtrl';
 import { LoginForm } from './LoginForm';
@@ -22,7 +21,6 @@ export const LoginPage: FC = () => {
             ldapEnabled,
             authProxyEnabled,
             disableLoginForm,
-            disableUserSignUp,
             login,
             isLoggingIn,
             changePassword,
@@ -42,7 +40,6 @@ export const LoginPage: FC = () => {
                 ) : null}
 
                 <LoginServiceButtons />
-                {!disableUserSignUp ? <UserSignup /> : null}
               </div>
               <CSSTransition
                 appear={true}

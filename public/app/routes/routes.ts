@@ -214,18 +214,6 @@ export function setupAngularRoutes($routeProvider: route.IRouteProvider, $locati
       templateUrl: 'public/app/features/org/partials/newOrg.html',
       controller: 'NewOrgCtrl',
     })
-    .when('/org/users', {
-      template: '<react-container />',
-      resolve: {
-        component: () =>
-          SafeDynamicImport(import(/* webpackChunkName: "UsersListPage" */ 'app/features/users/UsersListPage')),
-      },
-    })
-    .when('/org/users/invite', {
-      templateUrl: 'public/app/features/org/partials/invite.html',
-      controller: 'UserInviteCtrl',
-      controllerAs: 'ctrl',
-    })
     .when('/org/apikeys', {
       template: '<react-container />',
       resolve: {
@@ -327,26 +315,6 @@ export function setupAngularRoutes($routeProvider: route.IRouteProvider, $locati
         component: () => LoginPage,
       },
       pageClass: 'login-page sidemenu-hidden',
-    })
-    .when('/invite/:code', {
-      templateUrl: 'public/app/partials/signup_invited.html',
-      controller: 'InvitedCtrl',
-      pageClass: 'sidemenu-hidden',
-    })
-    .when('/signup', {
-      templateUrl: 'public/app/partials/signup_step2.html',
-      controller: 'SignUpCtrl',
-      pageClass: 'sidemenu-hidden',
-    })
-    .when('/user/password/send-reset-email', {
-      templateUrl: 'public/app/partials/reset_password.html',
-      controller: 'ResetPasswordCtrl',
-      pageClass: 'sidemenu-hidden',
-    })
-    .when('/user/password/reset', {
-      templateUrl: 'public/app/partials/reset_password.html',
-      controller: 'ResetPasswordCtrl',
-      pageClass: 'sidemenu-hidden',
     })
     .when('/dashboard/snapshots', {
       templateUrl: 'public/app/features/manage-dashboards/partials/snapshot_list.html',

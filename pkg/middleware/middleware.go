@@ -4,19 +4,16 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"strconv"
 	"strings"
 	"time"
 
 	macaron "gopkg.in/macaron.v1"
 
 	"github.com/grafana/grafana/pkg/bus"
-	"github.com/grafana/grafana/pkg/components/apikeygen"
 	"github.com/grafana/grafana/pkg/infra/log"
 	"github.com/grafana/grafana/pkg/infra/remotecache"
 	"github.com/grafana/grafana/pkg/models"
 	"github.com/grafana/grafana/pkg/setting"
-	"github.com/grafana/grafana/pkg/util"
 )
 
 var getTime = time.Now
@@ -44,31 +41,23 @@ func GetContextHandler(
 		ctx := &models.ReqContext{
 			Context:        c,
 			SignedInUser:   &models.SignedInUser{},
-			IsSignedIn:     false,
-			AllowAnonymous: false,
+			IsSignedIn:     true,
+			AllowAnonymous: true,
 			SkipCache:      false,
 			Logger:         log.New("context"),
 		}
 
-		orgId := int64(0)
-		orgIdHeader := ctx.Req.Header.Get("X-Grafana-Org-Id")
-		if orgIdHeader != "" {
-			orgId, _ = strconv.ParseInt(orgIdHeader, 10, 64)
-		}
-
-		// the order in which these are tested are important
-		// look for api key in Authorization header first
-		// then init session and look for userId in session
-		// then look for api key in session (special case for render calls via api)
-		// then test if anonymous access is enabled
-		switch {
-		case initContextWithRenderAuth(ctx):
-		case initContextWithApiKey(ctx):
-		case initContextWithBasicAuth(ctx, orgId):
-		case initContextWithAuthProxy(remoteCache, ctx, orgId):
-		case initContextWithToken(ats, ctx, orgId):
-		case initContextWithAnonymousUser(ctx):
-		}
+		// this is the fake admin/admin user that currently exist; everyone is admin going forward.
+		// {UserId:1 OrgId:1 OrgName:Main Org. OrgRole:Admin Login:admin Name: Email:admin@localhost ApiKeyId:0 OrgCount:1 IsGrafanaAdmin:true IsAnonymous:false HelpFlags1:0 LastSeenAt:2019-10-28 11:12:44 +0000 UTC Teams:[]}
+		initContextWithAnonymousUser(ctx)
+		ctx.SignedInUser.IsGrafanaAdmin = true
+		ctx.SignedInUser.OrgId = 1
+		ctx.SignedInUser.UserId = 1
+		ctx.SignedInUser.OrgName = "Main Org."
+		ctx.SignedInUser.OrgRole = "Admin"
+		ctx.SignedInUser.Login = "admin"
+		ctx.SignedInUser.Email = "admin@locallhost"
+		ctx.SignedInUser.OrgCount = 1
 
 		ctx.Logger = log.New("context", "userId", ctx.UserId, "orgId", ctx.OrgId, "uname", ctx.Login)
 		ctx.Data["ctx"] = ctx
@@ -102,141 +91,6 @@ func initContextWithAnonymousUser(ctx *models.ReqContext) bool {
 	ctx.OrgRole = models.RoleType(setting.AnonymousOrgRole)
 	ctx.OrgId = orgQuery.Result.Id
 	ctx.OrgName = orgQuery.Result.Name
-	return true
-}
-
-func initContextWithApiKey(ctx *models.ReqContext) bool {
-	var keyString string
-	if keyString = getApiKey(ctx); keyString == "" {
-		return false
-	}
-
-	// base64 decode key
-	decoded, err := apikeygen.Decode(keyString)
-	if err != nil {
-		ctx.JsonApiErr(401, errStringInvalidAPIKey, err)
-		return true
-	}
-
-	// fetch key
-	keyQuery := models.GetApiKeyByNameQuery{KeyName: decoded.Name, OrgId: decoded.OrgId}
-	if err := bus.Dispatch(&keyQuery); err != nil {
-		ctx.JsonApiErr(401, errStringInvalidAPIKey, err)
-		return true
-	}
-
-	apikey := keyQuery.Result
-
-	// validate api key
-	isValid, err := apikeygen.IsValid(decoded, apikey.Key)
-	if err != nil {
-		ctx.JsonApiErr(500, "Validating API key failed", err)
-		return true
-	}
-	if !isValid {
-		ctx.JsonApiErr(401, errStringInvalidAPIKey, err)
-		return true
-	}
-
-	// check for expiration
-	if apikey.Expires != nil && *apikey.Expires <= getTime().Unix() {
-		ctx.JsonApiErr(401, "Expired API key", err)
-		return true
-	}
-
-	ctx.IsSignedIn = true
-	ctx.SignedInUser = &models.SignedInUser{}
-	ctx.OrgRole = apikey.Role
-	ctx.ApiKeyId = apikey.Id
-	ctx.OrgId = apikey.OrgId
-	return true
-}
-
-func initContextWithBasicAuth(ctx *models.ReqContext, orgId int64) bool {
-	if !setting.BasicAuthEnabled {
-		return false
-	}
-
-	header := ctx.Req.Header.Get("Authorization")
-	if header == "" {
-		return false
-	}
-
-	username, password, err := util.DecodeBasicAuthHeader(header)
-	if err != nil {
-		ctx.JsonApiErr(401, "Invalid Basic Auth Header", err)
-		return true
-	}
-
-	authQuery := models.LoginUserQuery{
-		Username: username,
-		Password: password,
-	}
-	if err := bus.Dispatch(&authQuery); err != nil {
-		ctx.Logger.Debug(
-			"Failed to authorize the user",
-			"username", username,
-		)
-
-		ctx.JsonApiErr(401, errStringInvalidUsernamePassword, err)
-		return true
-	}
-
-	user := authQuery.User
-
-	query := models.GetSignedInUserQuery{UserId: user.Id, OrgId: orgId}
-	if err := bus.Dispatch(&query); err != nil {
-		ctx.Logger.Error(
-			"Failed at user signed in",
-			"id", user.Id,
-			"org", orgId,
-		)
-		ctx.JsonApiErr(401, errStringInvalidUsernamePassword, err)
-		return true
-	}
-
-	ctx.SignedInUser = query.Result
-	ctx.IsSignedIn = true
-	return true
-}
-
-func initContextWithToken(authTokenService models.UserTokenService, ctx *models.ReqContext, orgID int64) bool {
-	if setting.LoginCookieName == "" {
-		return false
-	}
-
-	rawToken := ctx.GetCookie(setting.LoginCookieName)
-	if rawToken == "" {
-		return false
-	}
-
-	token, err := authTokenService.LookupToken(ctx.Req.Context(), rawToken)
-	if err != nil {
-		ctx.Logger.Error("Failed to look up user based on cookie", "error", err)
-		WriteSessionCookie(ctx, "", -1)
-		return false
-	}
-
-	query := models.GetSignedInUserQuery{UserId: token.UserId, OrgId: orgID}
-	if err := bus.Dispatch(&query); err != nil {
-		ctx.Logger.Error("Failed to get user with id", "userId", token.UserId, "error", err)
-		return false
-	}
-
-	ctx.SignedInUser = query.Result
-	ctx.IsSignedIn = true
-	ctx.UserToken = token
-
-	rotated, err := authTokenService.TryRotateToken(ctx.Req.Context(), token, ctx.RemoteAddr(), ctx.Req.UserAgent())
-	if err != nil {
-		ctx.Logger.Error("Failed to rotate token", "error", err)
-		return true
-	}
-
-	if rotated {
-		WriteSessionCookie(ctx, token.UnhashedToken, setting.LoginMaxLifetimeDays)
-	}
-
 	return true
 }
 

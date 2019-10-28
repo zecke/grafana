@@ -361,15 +361,6 @@ func TestDashboardFolderDataAccess(t *testing.T) {
 					So(err, ShouldBeNil)
 					So(query.Result, ShouldBeTrue)
 				})
-
-				Convey("should not have admin permission in folders", func() {
-					query := &models.HasAdminPermissionInFoldersQuery{
-						SignedInUser: &models.SignedInUser{UserId: adminUser.Id, OrgId: 1, OrgRole: models.ROLE_EDITOR},
-					}
-					err := HasAdminPermissionInFolders(query)
-					So(err, ShouldBeNil)
-					So(query.Result, ShouldBeFalse)
-				})
 			})
 
 			Convey("Viewer users", func() {
@@ -415,24 +406,6 @@ func TestDashboardFolderDataAccess(t *testing.T) {
 
 					So(len(query.Result), ShouldEqual, 1)
 					So(query.Result[0].Id, ShouldEqual, folder1.Id)
-				})
-
-				Convey("should not have edit permission in folders", func() {
-					query := &models.HasEditPermissionInFoldersQuery{
-						SignedInUser: &models.SignedInUser{UserId: viewerUser.Id, OrgId: 1, OrgRole: models.ROLE_VIEWER},
-					}
-					err := HasEditPermissionInFolders(query)
-					So(err, ShouldBeNil)
-					So(query.Result, ShouldBeFalse)
-				})
-
-				Convey("should not have admin permission in folders", func() {
-					query := &models.HasAdminPermissionInFoldersQuery{
-						SignedInUser: &models.SignedInUser{UserId: adminUser.Id, OrgId: 1, OrgRole: models.ROLE_VIEWER},
-					}
-					err := HasAdminPermissionInFolders(query)
-					So(err, ShouldBeNil)
-					So(query.Result, ShouldBeFalse)
 				})
 
 				Convey("and admin permission is given for user with org role viewer in one dashboard folder", func() {

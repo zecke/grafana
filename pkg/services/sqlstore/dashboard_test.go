@@ -342,33 +342,6 @@ func TestDashboardDataAccess(t *testing.T) {
 					So(len(hit2.Tags), ShouldEqual, 1)
 				})
 			})
-
-			Convey("Given two dashboards, one is starred dashboard by user 10, other starred by user 1", func() {
-				starredDash := insertTestDashboard("starred dash", 1, 0, false)
-				err := StarDashboard(&m.StarDashboardCommand{
-					DashboardId: starredDash.Id,
-					UserId:      10,
-				})
-				So(err, ShouldBeNil)
-
-				err = StarDashboard(&m.StarDashboardCommand{
-					DashboardId: savedDash.Id,
-					UserId:      1,
-				})
-				So(err, ShouldBeNil)
-
-				Convey("Should be able to search for starred dashboards", func() {
-					query := search.FindPersistedDashboardsQuery{
-						SignedInUser: &m.SignedInUser{UserId: 10, OrgId: 1, OrgRole: m.ROLE_EDITOR},
-						IsStarred:    true,
-					}
-					err := SearchDashboards(&query)
-
-					So(err, ShouldBeNil)
-					So(len(query.Result), ShouldEqual, 1)
-					So(query.Result[0].Title, ShouldEqual, "starred dash")
-				})
-			})
 		})
 
 		Convey("Given a plugin with imported dashboards", func() {

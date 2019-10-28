@@ -34,7 +34,6 @@ func (hs *HTTPServer) registerRoutes() {
 	r.Get("/datasources/edit/*", reqOrgAdmin, hs.Index)
 	r.Get("/org/users", reqOrgAdmin, hs.Index)
 	r.Get("/org/users/new", reqOrgAdmin, hs.Index)
-	r.Get("/org/users/invite", reqOrgAdmin, hs.Index)
 	r.Get("/org/teams", reqCanAccessTeams, hs.Index)
 	r.Get("/org/teams/*", reqCanAccessTeams, hs.Index)
 	r.Get("/org/apikeys/", reqOrgAdmin, hs.Index)
@@ -162,10 +161,6 @@ func (hs *HTTPServer) registerRoutes() {
 			orgRoute.Post("/users", quota("user"), bind(models.AddOrgUserCommand{}), Wrap(AddOrgUserToCurrentOrg))
 			orgRoute.Patch("/users/:userId", bind(models.UpdateOrgUserCommand{}), Wrap(UpdateOrgUserForCurrentOrg))
 			orgRoute.Delete("/users/:userId", Wrap(RemoveOrgUserForCurrentOrg))
-
-			// invites
-			orgRoute.Get("/invites", Wrap(GetPendingOrgInvites))
-			orgRoute.Post("/invites", quota("user"), bind(dtos.AddInviteForm{}), Wrap(AddOrgInvite))
 
 			// prefs
 			orgRoute.Get("/preferences", Wrap(GetOrgPreferences))

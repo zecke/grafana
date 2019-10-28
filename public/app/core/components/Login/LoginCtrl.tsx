@@ -31,7 +31,6 @@ interface Props {
     disableLoginForm: boolean;
     ldapEnabled: boolean;
     authProxyEnabled: boolean;
-    disableUserSignUp: boolean;
     isOauthEnabled: boolean;
     loginHint: string;
     passwordHint: string;
@@ -116,7 +115,7 @@ export class LoginCtrl extends PureComponent<Props, State> {
     const { children } = this.props;
     const { isLoggingIn, isChangingPassword } = this.state;
     const { login, toGrafana, changePassword } = this;
-    const { loginHint, passwordHint, disableLoginForm, ldapEnabled, authProxyEnabled, disableUserSignUp } = config;
+    const { loginHint, passwordHint, disableLoginForm, ldapEnabled, authProxyEnabled } = config;
 
     return (
       <>
@@ -127,7 +126,6 @@ export class LoginCtrl extends PureComponent<Props, State> {
           disableLoginForm,
           ldapEnabled,
           authProxyEnabled,
-          disableUserSignUp,
           login,
           isLoggingIn,
           changePassword,
