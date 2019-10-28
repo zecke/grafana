@@ -89,7 +89,7 @@ COPY --from=1 /tmp/usr/share /usr/share
 COPY --from=1 /tmp/etc/fonts /etc/fonts
 COPY --from=1 /usr/local/bin/phantomjs /usr/local/bin
 
-COPY --from=0 /go/src/github.com/grafana/grafana/bin/linux-amd64/grafana-server /go/src/github.com/grafana/grafana/bin/linux-amd64/grafana-cli ./bin/
+COPY --from=0 /go/src/github.com/grafana/grafana/bin/linux-amd64/grafana-server ./bin/
 COPY --from=1 /usr/src/app/public ./public
 COPY --from=1 /usr/src/app/tools ./tools
 COPY tools/phantomjs/render.js ./tools/phantomjs/render.js
