@@ -346,32 +346,6 @@ export function setupAngularRoutes($routeProvider: route.IRouteProvider, $locati
       controllerAs: 'ctrl',
       templateUrl: 'public/app/features/admin/partials/styleguide.html',
     })
-    .when('/alerting', {
-      redirectTo: '/alerting/list',
-    })
-    .when('/alerting/list', {
-      template: '<react-container />',
-      reloadOnSearch: false,
-      resolve: {
-        component: () =>
-          SafeDynamicImport(import(/* webpackChunkName: "AlertRuleList" */ 'app/features/alerting/AlertRuleList')),
-      },
-    })
-    .when('/alerting/notifications', {
-      templateUrl: 'public/app/features/alerting/partials/notifications_list.html',
-      controller: 'AlertNotificationsListCtrl',
-      controllerAs: 'ctrl',
-    })
-    .when('/alerting/notification/new', {
-      templateUrl: 'public/app/features/alerting/partials/notification_edit.html',
-      controller: 'AlertNotificationEditCtrl',
-      controllerAs: 'ctrl',
-    })
-    .when('/alerting/notification/:id/edit', {
-      templateUrl: 'public/app/features/alerting/partials/notification_edit.html',
-      controller: 'AlertNotificationEditCtrl',
-      controllerAs: 'ctrl',
-    })
     .otherwise({
       templateUrl: 'public/app/partials/error.html',
       controller: 'ErrorCtrl',

@@ -6,8 +6,6 @@ import './playlist/all';
 import './panel/all';
 import './org/all';
 import './admin';
-import './alerting/NotificationsEditCtrl';
-import './alerting/NotificationsListCtrl';
 import './manage-dashboards';
 import './teams/CreateTeamCtrl';
 import './profile/all';
