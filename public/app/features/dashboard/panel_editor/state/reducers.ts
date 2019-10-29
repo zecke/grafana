@@ -10,14 +10,12 @@ export enum PanelEditorTabIds {
   Queries = 'queries',
   Visualization = 'visualization',
   Advanced = 'advanced',
-  Alert = 'alert',
 }
 
 export const panelEditorTabTexts = {
   [PanelEditorTabIds.Queries]: 'Queries',
   [PanelEditorTabIds.Visualization]: 'Visualization',
   [PanelEditorTabIds.Advanced]: 'General',
-  [PanelEditorTabIds.Alert]: 'Alert',
 };
 
 export const getPanelEditorTab = (tabId: PanelEditorTabIds): PanelEditorTab => {
