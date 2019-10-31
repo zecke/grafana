@@ -23,7 +23,6 @@ import (
 	_ "github.com/grafana/grafana/pkg/infra/remotecache"
 	_ "github.com/grafana/grafana/pkg/infra/serverlock"
 	_ "github.com/grafana/grafana/pkg/infra/tracing"
-	_ "github.com/grafana/grafana/pkg/infra/usagestats"
 	"github.com/grafana/grafana/pkg/login"
 	"github.com/grafana/grafana/pkg/login/social"
 	"github.com/grafana/grafana/pkg/middleware"
