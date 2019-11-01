@@ -25,8 +25,6 @@ import (
 	"github.com/grafana/grafana/pkg/registry"
 	"github.com/grafana/grafana/pkg/services/datasources"
 	"github.com/grafana/grafana/pkg/services/hooks"
-	"github.com/grafana/grafana/pkg/services/login"
-	"github.com/grafana/grafana/pkg/services/quota"
 	"github.com/grafana/grafana/pkg/services/rendering"
 	"github.com/grafana/grafana/pkg/setting"
 	"github.com/prometheus/client_golang/prometheus"
@@ -64,10 +62,8 @@ type HTTPServer struct {
 	CacheService        *localcache.CacheService `inject:""`
 	DatasourceCache     datasources.CacheService `inject:""`
 	AuthTokenService    models.UserTokenService  `inject:""`
-	QuotaService        *quota.QuotaService      `inject:""`
 	RemoteCacheService  *remotecache.RemoteCache `inject:""`
 	ProvisioningService ProvisioningService      `inject:""`
-	Login               *login.LoginService      `inject:""`
 }
 
 func (hs *HTTPServer) Init() error {

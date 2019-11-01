@@ -211,15 +211,6 @@ func (hs *HTTPServer) PostDashboard(c *m.ReqContext, cmd m.SaveDashboardCommand)
 	dash := cmd.GetDashboardModel()
 
 	newDashboard := dash.Id == 0 && dash.Uid == ""
-	if newDashboard {
-		limitReached, err := hs.QuotaService.QuotaReached(c, "dashboard")
-		if err != nil {
-			return Error(500, "failed to get quota", err)
-		}
-		if limitReached {
-			return Error(403, "Quota reached", nil)
-		}
-	}
 
 	dashItem := &dashboards.SaveDashboardDTO{
 		Dashboard: dash,

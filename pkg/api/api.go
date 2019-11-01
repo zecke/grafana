@@ -18,7 +18,6 @@ func (hs *HTTPServer) registerRoutes() {
 	reqSnapshotPublicModeOrSignedIn := middleware.SnapshotPublicModeOrSignedIn()
 	redirectFromLegacyDashboardURL := middleware.RedirectFromLegacyDashboardURL()
 	redirectFromLegacyDashboardSoloURL := middleware.RedirectFromLegacyDashboardSoloURL()
-	quota := middleware.Quota(hs.QuotaService)
 	bind := binding.Bind
 
 	r := hs.RouteRegister
@@ -103,7 +102,6 @@ func (hs *HTTPServer) registerRoutes() {
 			userRoute.Delete("/stars/dashboard/:id", Wrap(UnstarDashboard))
 
 			userRoute.Put("/password", bind(models.ChangeUserPasswordCommand{}), Wrap(ChangeUserPassword))
-			userRoute.Get("/quotas", Wrap(GetUserQuotas))
 			userRoute.Put("/helpflags/:id", Wrap(SetHelpFlag))
 			// For dev purpose
 			userRoute.Get("/helpflags/clear", Wrap(ClearHelpFlags))
@@ -150,7 +148,6 @@ func (hs *HTTPServer) registerRoutes() {
 		// org information available to all users.
 		apiRoute.Group("/org", func(orgRoute routing.RouteRegister) {
 			orgRoute.Get("/", Wrap(GetOrgCurrent))
-			orgRoute.Get("/quotas", Wrap(GetOrgQuotas))
 		})
 
 		// current org
@@ -158,7 +155,6 @@ func (hs *HTTPServer) registerRoutes() {
 			orgRoute.Put("/", bind(dtos.UpdateOrgForm{}), Wrap(UpdateOrgCurrent))
 			orgRoute.Put("/address", bind(dtos.UpdateOrgAddressForm{}), Wrap(UpdateOrgAddressCurrent))
 			orgRoute.Get("/users", Wrap(GetOrgUsersForCurrentOrg))
-			orgRoute.Post("/users", quota("user"), bind(models.AddOrgUserCommand{}), Wrap(AddOrgUserToCurrentOrg))
 			orgRoute.Patch("/users/:userId", bind(models.UpdateOrgUserCommand{}), Wrap(UpdateOrgUserForCurrentOrg))
 			orgRoute.Delete("/users/:userId", Wrap(RemoveOrgUserForCurrentOrg))
 
@@ -171,9 +167,6 @@ func (hs *HTTPServer) registerRoutes() {
 		apiRoute.Group("/org", func(orgRoute routing.RouteRegister) {
 			orgRoute.Get("/users/lookup", Wrap(GetOrgUsersForCurrentOrgLookup))
 		})
-
-		// create new org
-		apiRoute.Post("/orgs", quota("org"), bind(models.CreateOrgCommand{}), Wrap(CreateOrg))
 
 		// search all orgs
 		apiRoute.Get("/orgs", reqGrafanaAdmin, Wrap(SearchOrgs))
@@ -188,8 +181,6 @@ func (hs *HTTPServer) registerRoutes() {
 			orgsRoute.Post("/users", bind(models.AddOrgUserCommand{}), Wrap(AddOrgUser))
 			orgsRoute.Patch("/users/:userId", bind(models.UpdateOrgUserCommand{}), Wrap(UpdateOrgUser))
 			orgsRoute.Delete("/users/:userId", Wrap(RemoveOrgUser))
-			orgsRoute.Get("/quotas", Wrap(GetOrgQuotas))
-			orgsRoute.Put("/quotas/:target", bind(models.UpdateOrgQuotaCmd{}), Wrap(UpdateOrgQuota))
 		}, reqGrafanaAdmin)
 
 		// orgs (admin routes)
@@ -200,7 +191,6 @@ func (hs *HTTPServer) registerRoutes() {
 		// auth api keys
 		apiRoute.Group("/auth/keys", func(keysRoute routing.RouteRegister) {
 			keysRoute.Get("/", Wrap(GetAPIKeys))
-			keysRoute.Post("/", quota("api_key"), bind(models.AddApiKeyCommand{}), Wrap(hs.AddAPIKey))
 			keysRoute.Delete("/:id", Wrap(DeleteAPIKey))
 		}, reqOrgAdmin)
 
@@ -212,7 +202,6 @@ func (hs *HTTPServer) registerRoutes() {
 		// Data sources
 		apiRoute.Group("/datasources", func(datasourceRoute routing.RouteRegister) {
 			datasourceRoute.Get("/", Wrap(GetDataSources))
-			datasourceRoute.Post("/", quota("data_source"), bind(models.AddDataSourceCommand{}), Wrap(AddDataSource))
 			datasourceRoute.Put("/:id", bind(models.UpdateDataSourceCommand{}), Wrap(UpdateDataSource))
 			datasourceRoute.Delete("/:id", Wrap(DeleteDataSourceById))
 			datasourceRoute.Delete("/name/:name", Wrap(DeleteDataSourceByName))
@@ -357,8 +346,6 @@ func (hs *HTTPServer) registerRoutes() {
 		adminRoute.Delete("/users/:id", AdminDeleteUser)
 		adminRoute.Post("/users/:id/disable", Wrap(hs.AdminDisableUser))
 		adminRoute.Post("/users/:id/enable", Wrap(AdminEnableUser))
-		adminRoute.Get("/users/:id/quotas", Wrap(GetUserQuotas))
-		adminRoute.Put("/users/:id/quotas/:target", bind(models.UpdateUserQuotaCmd{}), Wrap(UpdateUserQuota))
 		adminRoute.Get("/stats", AdminGetStats)
 		adminRoute.Post("/pause-all-alerts", bind(dtos.PauseAllAlertsCommand{}), Wrap(PauseAllAlerts))
 
