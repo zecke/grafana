@@ -2,9 +2,9 @@
 
 The open-source platform for monitoring and observability.
 
-[![License](https://img.shields.io/github/license/grafana/grafana)](LICENSE)
-[![Circle CI](https://img.shields.io/circleci/build/gh/grafana/grafana)](https://circleci.com/gh/grafana/grafana)
-[![Go Report Card](https://goreportcard.com/badge/github.com/grafana/grafana)](https://goreportcard.com/report/github.com/grafana/grafana)
+[![License](https://img.shields.io/github/license/spartanaorg/spartana)](LICENSE)
+[![Circle CI](https://img.shields.io/circleci/build/gh/spartanaorg/spartana)](https://circleci.com/gh/spartanaorg/spartana)
+[![Go Report Card](https://goreportcard.com/badge/github.com/spartanaorg/spartana)](https://goreportcard.com/report/github.com/spartanaorg/spartana)
 
 Grafana allows you to query, visualize, alert on and understand your metrics no matter where they are stored. Create, explore, and share dashboards with your team and foster a data driven culture:
 
@@ -32,7 +32,7 @@ If you're interested in contributing to the Grafana project:
 
 - Start by reading the [Contributing guide](/CONTRIBUTING.md).
 - Learn how to set up your local environment, in our [Developer guide](/contribute/developer-guide.md).
-- Explore our [beginner-friendly issues](https://github.com/grafana/grafana/issues?q=is%3Aopen+is%3Aissue+label%3A%22beginner+friendly%22).
+- Explore our [beginner-friendly issues](https://github.com/spartanaorg/spartana/issues?q=is%3Aopen+is%3Aissue+label%3A%22beginner+friendly%22).
 
 ## Get involved
 
@@ -43,4 +43,4 @@ If you're interested in contributing to the Grafana project:
 
 ## License
 
-Grafana is distributed under [Apache 2.0 License](https://github.com/grafana/grafana/blob/master/LICENSE).
+Grafana is distributed under [Apache 2.0 License](https://github.com/spartanaorg/spartana/blob/master/LICENSE).
