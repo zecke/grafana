@@ -31,18 +31,8 @@ type scenarioContext struct {
 	req *http.Request
 }
 
-func (sc *scenarioContext) withValidApiKey() *scenarioContext {
-	sc.apiKey = "eyJrIjoidjVuQXdwTWFmRlA2em5hUzR1cmhkV0RMUzU1MTFNNDIiLCJuIjoiYXNkIiwiaWQiOjF9"
-	return sc
-}
-
 func (sc *scenarioContext) withTokenSessionCookie(unhashedToken string) *scenarioContext {
 	sc.tokenSessionCookie = unhashedToken
-	return sc
-}
-
-func (sc *scenarioContext) withAuthorizationHeader(authHeader string) *scenarioContext {
-	sc.authHeader = authHeader
 	return sc
 }
 

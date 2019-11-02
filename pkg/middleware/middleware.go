@@ -16,13 +16,6 @@ import (
 	"github.com/grafana/grafana/pkg/setting"
 )
 
-var getTime = time.Now
-
-const (
-	errStringInvalidUsernamePassword = "Invalid username or password"
-	errStringInvalidAPIKey           = "Invalid API key"
-)
-
 var (
 	ReqGrafanaAdmin = Auth(&AuthOptions{
 		ReqSignedIn:     true,
