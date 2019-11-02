@@ -3,7 +3,6 @@ package middleware
 import (
 	"path/filepath"
 	"testing"
-	"time"
 
 	. "github.com/smartystreets/goconvey/convey"
 	"gopkg.in/macaron.v1"
@@ -17,19 +16,6 @@ import (
 )
 
 const errorTemplate = "error-template"
-
-func mockGetTime() {
-	var timeSeed int64
-	getTime = func() time.Time {
-		fakeNow := time.Unix(timeSeed, 0)
-		timeSeed++
-		return fakeNow
-	}
-}
-
-func resetGetTime() {
-	getTime = time.Now
-}
 
 func TestMiddlewareContext(t *testing.T) {
 	setting.ERR_TEMPLATE_NAME = errorTemplate

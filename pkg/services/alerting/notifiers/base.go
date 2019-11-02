@@ -9,10 +9,6 @@ import (
 	"github.com/grafana/grafana/pkg/services/alerting"
 )
 
-const (
-	triggMetrString = "Triggered metrics:\n\n"
-)
-
 // NotifierBase is the base implementation of a notifier.
 type NotifierBase struct {
 	Name                  string

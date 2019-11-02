@@ -7,15 +7,6 @@ import (
 	"github.com/grafana/grafana/pkg/models"
 )
 
-type evalHandler interface {
-	Eval(evalContext *EvalContext)
-}
-
-type scheduler interface {
-	Tick(time time.Time, execQueue chan *Job)
-	Update(rules []*Rule)
-}
-
 // Notifier is responsible for sending alert notifications.
 type Notifier interface {
 	Notify(evalContext *EvalContext) error
