@@ -43,44 +43,6 @@ func TestMiddlewareQuota(t *testing.T) {
 		}
 		QuotaFn := Quota(qs)
 
-		middlewareScenario(t, "with user not logged in", func(sc *scenarioContext) {
-			bus.AddHandler("globalQuota", func(query *m.GetGlobalQuotaByTargetQuery) error {
-				query.Result = &m.GlobalQuotaDTO{
-					Target: query.Target,
-					Limit:  query.Default,
-					Used:   4,
-				}
-				return nil
-			})
-
-			Convey("global quota not reached", func() {
-				sc.m.Get("/user", QuotaFn("user"), sc.defaultHandler)
-				sc.fakeReq("GET", "/user").exec()
-				So(sc.resp.Code, ShouldEqual, 200)
-			})
-
-			Convey("global quota reached", func() {
-				setting.Quota.Global.User = 4
-				sc.m.Get("/user", QuotaFn("user"), sc.defaultHandler)
-				sc.fakeReq("GET", "/user").exec()
-				So(sc.resp.Code, ShouldEqual, 403)
-			})
-
-			Convey("global session quota not reached", func() {
-				setting.Quota.Global.Session = 10
-				sc.m.Get("/user", QuotaFn("session"), sc.defaultHandler)
-				sc.fakeReq("GET", "/user").exec()
-				So(sc.resp.Code, ShouldEqual, 200)
-			})
-
-			Convey("global session quota reached", func() {
-				setting.Quota.Global.Session = 1
-				sc.m.Get("/user", QuotaFn("session"), sc.defaultHandler)
-				sc.fakeReq("GET", "/user").exec()
-				So(sc.resp.Code, ShouldEqual, 403)
-			})
-		})
-
 		middlewareScenario(t, "with user logged in", func(sc *scenarioContext) {
 			sc.withTokenSessionCookie("token")
 			bus.AddHandler("test", func(query *m.GetSignedInUserQuery) error {
