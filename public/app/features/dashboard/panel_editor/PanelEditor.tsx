@@ -3,11 +3,12 @@ import classNames from 'classnames';
 import { hot } from 'react-hot-loader';
 import { connect } from 'react-redux';
 import { PanelPlugin, PanelPluginMeta, Tooltip } from '@grafana/ui';
-import { AngularComponent } from '@grafana/runtime';
+import { AngularComponent, config } from '@grafana/runtime';
 
 import { QueriesTab } from './QueriesTab';
 import VisualizationTab from './VisualizationTab';
 import { GeneralTab } from './GeneralTab';
+import { AlertTab } from '../../alerting/AlertTab';
 import { PanelModel } from '../state/PanelModel';
 import { DashboardModel } from '../state/DashboardModel';
 import { StoreState } from '../../../types';
@@ -48,6 +49,8 @@ class UnConnectedPanelEditor extends PureComponent<PanelEditorProps> {
 
     refreshPanelEditor({
       hasQueriesTab: !meta.skipDataQuery,
+      usesGraphPlugin: meta.id === 'graph',
+      alertingEnabled: config.alertingEnabled,
     });
   };
 
@@ -73,6 +76,8 @@ class UnConnectedPanelEditor extends PureComponent<PanelEditorProps> {
         return <GeneralTab panel={panel} />;
       case 'queries':
         return <QueriesTab panel={panel} dashboard={dashboard} />;
+      case 'alert':
+        return <AlertTab angularPanel={angularPanel} dashboard={dashboard} panel={panel} />;
       case 'visualization':
         return (
           <VisualizationTab

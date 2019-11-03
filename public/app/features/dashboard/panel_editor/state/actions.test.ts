@@ -11,6 +11,7 @@ describe('refreshPanelEditor', () => {
         getPanelEditorTab(PanelEditorTabIds.Queries),
         getPanelEditorTab(PanelEditorTabIds.Visualization),
         getPanelEditorTab(PanelEditorTabIds.Advanced),
+        getPanelEditorTab(PanelEditorTabIds.Alert),
       ];
       const dispatchedActions = await thunkTester({ panelEditor: { ...initialState, activeTab: null } })
         .givenThunk(refreshPanelEditor)
@@ -28,6 +29,7 @@ describe('refreshPanelEditor', () => {
         getPanelEditorTab(PanelEditorTabIds.Queries),
         getPanelEditorTab(PanelEditorTabIds.Visualization),
         getPanelEditorTab(PanelEditorTabIds.Advanced),
+        getPanelEditorTab(PanelEditorTabIds.Alert),
       ];
       const dispatchedActions = await thunkTester({ panelEditor: { ...initialState, activeTab } })
         .givenThunk(refreshPanelEditor)
@@ -41,7 +43,11 @@ describe('refreshPanelEditor', () => {
   describe('when called and plugin has no queries tab', () => {
     it('then the dispatched action should not include Queries tab and default the activeTab to PanelEditorTabIds.Visualization', async () => {
       const activeTab = PanelEditorTabIds.Visualization;
-      const tabs = [getPanelEditorTab(PanelEditorTabIds.Visualization), getPanelEditorTab(PanelEditorTabIds.Advanced)];
+      const tabs = [
+        getPanelEditorTab(PanelEditorTabIds.Visualization),
+        getPanelEditorTab(PanelEditorTabIds.Advanced),
+        getPanelEditorTab(PanelEditorTabIds.Alert),
+      ];
       const dispatchedActions = await thunkTester({ panelEditor: { ...initialState } })
         .givenThunk(refreshPanelEditor)
         .whenThunkIsDispatched({ hasQueriesTab: false, alertingEnabled: true, usesGraphPlugin: true });
@@ -58,6 +64,7 @@ describe('refreshPanelEditor', () => {
         getPanelEditorTab(PanelEditorTabIds.Queries),
         getPanelEditorTab(PanelEditorTabIds.Visualization),
         getPanelEditorTab(PanelEditorTabIds.Advanced),
+        getPanelEditorTab(PanelEditorTabIds.Alert),
       ];
       const dispatchedActions = await thunkTester({ panelEditor: { ...initialState } })
         .givenThunk(refreshPanelEditor)
