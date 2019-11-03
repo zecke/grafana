@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import { ActionOf } from '../redux';
 import { CleanUp, cleanUpAction } from '../actions/cleanUp';
 import sharedReducers from 'app/core/reducers';
+import alertingReducers from 'app/features/alerting/state/reducers';
 import teamsReducers from 'app/features/teams/state/reducers';
 import apiKeysReducers from 'app/features/api-keys/state/reducers';
 import foldersReducers from 'app/features/folders/state/reducers';
@@ -15,6 +16,7 @@ import ldapReducers from 'app/features/admin/state/reducers';
 
 const rootReducers = {
   ...sharedReducers,
+  ...alertingReducers,
   ...teamsReducers,
   ...apiKeysReducers,
   ...foldersReducers,

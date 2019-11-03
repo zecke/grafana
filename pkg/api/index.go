@@ -179,6 +179,22 @@ func (hs *HTTPServer) setIndexViewData(c *m.ReqContext) (*dtos.IndexViewData, er
 		data.NavTree = append(data.NavTree, profileNode)
 	}
 
+	if setting.AlertingEnabled && (c.OrgRole == m.ROLE_ADMIN || c.OrgRole == m.ROLE_EDITOR) {
+		alertChildNavs := []*dtos.NavLink{
+			{Text: "Alert Rules", Id: "alert-list", Url: setting.AppSubUrl + "/alerting/list", Icon: "gicon gicon-alert-rules"},
+			{Text: "Notification channels", Id: "channels", Url: setting.AppSubUrl + "/alerting/notifications", Icon: "gicon gicon-alert-notification-channel"},
+		}
+
+		data.NavTree = append(data.NavTree, &dtos.NavLink{
+			Text:     "Alerting",
+			SubTitle: "Alert rules & notifications",
+			Id:       "alerting",
+			Icon:     "gicon gicon-alert",
+			Url:      setting.AppSubUrl + "/alerting/list",
+			Children: alertChildNavs,
+		})
+	}
+
 	enabledPlugins, err := plugins.GetEnabledPlugins(c.OrgId)
 	if err != nil {
 		return nil, err
