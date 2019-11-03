@@ -45,6 +45,7 @@ export class KeybindingSrv {
     if (!(this.$location.path() === '/login')) {
       this.bind(['?', 'h'], this.showHelpModal);
       this.bind('g h', this.goToHome);
+      this.bind('g a', this.openAlerting);
       this.bind('g p', this.goToProfile);
       this.bind('s o', this.openSearch);
       this.bind('f', this.openSearch);
@@ -81,6 +82,10 @@ export class KeybindingSrv {
 
   openSearch() {
     appEvents.emit(CoreEvents.showDashSearch);
+  }
+
+  openAlerting() {
+    this.$location.url('/alerting');
   }
 
   goToHome() {
