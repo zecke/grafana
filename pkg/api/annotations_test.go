@@ -33,26 +33,26 @@ func TestAnnotationsApiEndpoint(t *testing.T) {
 
 		Convey("When user is an Org Viewer", func() {
 			role := m.ROLE_VIEWER
-			Convey("Should not be allowed to save an annotation", func() {
+			Convey("Should be allowed to save an annotation", func() {
 				postAnnotationScenario("When calling POST on", "/api/annotations", "/api/annotations", role, cmd, func(sc *scenarioContext) {
 					sc.fakeReqWithParams("POST", sc.url, map[string]string{}).exec()
-					So(sc.resp.Code, ShouldEqual, 403)
+					So(sc.resp.Code, ShouldEqual, 200)
 				})
 
 				putAnnotationScenario("When calling PUT on", "/api/annotations/1", "/api/annotations/:annotationId", role, updateCmd, func(sc *scenarioContext) {
 					sc.fakeReqWithParams("PUT", sc.url, map[string]string{}).exec()
-					So(sc.resp.Code, ShouldEqual, 403)
+					So(sc.resp.Code, ShouldEqual, 200)
 				})
 
 				patchAnnotationScenario("When calling PATCH on", "/api/annotations/1", "/api/annotations/:annotationId", role, patchCmd, func(sc *scenarioContext) {
 					sc.fakeReqWithParams("PATCH", sc.url, map[string]string{}).exec()
-					So(sc.resp.Code, ShouldEqual, 403)
+					So(sc.resp.Code, ShouldEqual, 200)
 				})
 
 				loggedInUserScenarioWithRole("When calling DELETE on", "DELETE", "/api/annotations/1", "/api/annotations/:annotationId", role, func(sc *scenarioContext) {
 					sc.handlerFunc = DeleteAnnotationByID
 					sc.fakeReqWithParams("DELETE", sc.url, map[string]string{}).exec()
-					So(sc.resp.Code, ShouldEqual, 403)
+					So(sc.resp.Code, ShouldEqual, 200)
 				})
 			})
 		})
@@ -132,7 +132,7 @@ func TestAnnotationsApiEndpoint(t *testing.T) {
 
 		Convey("When user is an Org Viewer", func() {
 			role := m.ROLE_VIEWER
-			Convey("Should not be allowed to save an annotation", func() {
+			Convey("Should be allowed to save an annotation", func() {
 				postAnnotationScenario("When calling POST on", "/api/annotations", "/api/annotations", role, cmd, func(sc *scenarioContext) {
 					sc.fakeReqWithParams("POST", sc.url, map[string]string{}).exec()
 					So(sc.resp.Code, ShouldEqual, 403)
@@ -140,18 +140,18 @@ func TestAnnotationsApiEndpoint(t *testing.T) {
 
 				putAnnotationScenario("When calling PUT on", "/api/annotations/1", "/api/annotations/:annotationId", role, updateCmd, func(sc *scenarioContext) {
 					sc.fakeReqWithParams("PUT", sc.url, map[string]string{}).exec()
-					So(sc.resp.Code, ShouldEqual, 403)
+					So(sc.resp.Code, ShouldEqual, 200)
 				})
 
 				patchAnnotationScenario("When calling PATCH on", "/api/annotations/1", "/api/annotations/:annotationId", role, patchCmd, func(sc *scenarioContext) {
 					sc.fakeReqWithParams("PATCH", sc.url, map[string]string{}).exec()
-					So(sc.resp.Code, ShouldEqual, 403)
+					So(sc.resp.Code, ShouldEqual, 200)
 				})
 
 				loggedInUserScenarioWithRole("When calling DELETE on", "DELETE", "/api/annotations/1", "/api/annotations/:annotationId", role, func(sc *scenarioContext) {
 					sc.handlerFunc = DeleteAnnotationByID
 					sc.fakeReqWithParams("DELETE", sc.url, map[string]string{}).exec()
-					So(sc.resp.Code, ShouldEqual, 403)
+					So(sc.resp.Code, ShouldEqual, 200)
 				})
 			})
 		})
