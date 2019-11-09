@@ -104,10 +104,6 @@ aliases = ["/v1.1", "/guides/reference/admin", "/v3.1"]
       <img src="/img/docs/logos/icon_loki.svg">
       <h5>Loki</h5>
     </a>
-    <a href="{{< relref "features/datasources/mysql.md" >}}" class="nav-cards__item nav-cards__item--ds">
-      <img src="/img/docs/logos/icon_mysql.png" >
-      <h5>MySQL</h5>
-    </a>
     <a href="{{< relref "features/datasources/postgres.md" >}}" class="nav-cards__item nav-cards__item--ds">
       <img src="/img/docs/logos/icon_postgres.svg" >
       <h5>Postgres</h5>

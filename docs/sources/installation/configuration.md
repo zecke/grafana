@@ -202,11 +202,11 @@ embedded database (included in the main Grafana binary).
 ### url
 
 Use either URL or the other fields below to configure the database
-Example: `mysql://user:secret@host:port/database`
+Example: `postgres://user:secret@host:port/database`
 
 ### type
 
-Either `mysql`, `postgres` or `sqlite3`, it's your choice.
+Either `postgres` or `sqlite3`, it's your choice.
 
 ### path
 
@@ -215,9 +215,7 @@ will be stored.
 
 ### host
 
-Only applicable to MySQL or Postgres. Includes IP or hostname and port or in case of Unix sockets the path to it.
-For example, for MySQL running on the same host as Grafana: `host =
-127.0.0.1:3306` or with Unix sockets: `host = /var/run/mysqld/mysqld.sock`
+Only applicable to Postgres. Includes IP or hostname and port or in case of Unix sockets the path to it.
 
 ### name
 
@@ -235,7 +233,6 @@ The database user's password (not applicable for `sqlite3`). If the password con
 ### ssl_mode
 
 For Postgres, use either `disable`, `require` or `verify-full`.
-For MySQL, use either `true`, `false`, or `skip-verify`.
 
 ### ca_cert_path
 
@@ -251,7 +248,7 @@ The path to the client cert. Only if server requires client authentication.
 
 ### server_cert_name
 
-The common name field of the certificate used by the `mysql` or `postgres` server. Not necessary if `ssl_mode` is set to `skip-verify`.
+The common name field of the certificate used by the `postgres` server. Not necessary if `ssl_mode` is set to `skip-verify`.
 
 ### max_idle_conn
 The maximum number of connections in the idle connection pool.
@@ -261,7 +258,7 @@ The maximum number of open connections to the database.
 
 ### conn_max_lifetime
 
-Sets the maximum amount of time a connection may be reused. The default is 14400 (which means 14400 seconds or 4 hours). For MySQL, this setting should be shorter than the [`wait_timeout`](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_wait_timeout) variable.
+Sets the maximum amount of time a connection may be reused. The default is 14400 (which means 14400 seconds or 4 hours).
 
 ### log_queries
 
@@ -729,7 +726,7 @@ Please note that these options have been removed.
 
 ### provider
 
-Valid values are `memory`, `file`, `mysql`, `postgres`, `memcache` or `redis`. Default is `file`.
+Valid values are `memory`, `file`, `postgres`, `memcache` or `redis`. Default is `file`.
 
 ### provider_config
 
@@ -737,7 +734,6 @@ This option should be configured differently depending on what type of
 session provider you have configured.
 
 - **file:** session file path, e.g. `data/sessions`
-- **mysql:** go-sql-driver/mysql dsn config string, e.g. `user:password@tcp(127.0.0.1:3306)/database_name`
 - **postgres:** ex:  `user=a password=b host=localhost port=5432 dbname=c sslmode=verify-full`
 - **memcache:** ex:  `127.0.0.1:11211`
 - **redis:** ex: `addr=127.0.0.1:6379,pool_size=100,prefix=grafana`. For Unix socket, use for example: `network=unix,addr=/var/run/redis/redis.sock,pool_size=100,db=grafana`

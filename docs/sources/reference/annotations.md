@@ -73,6 +73,5 @@ The annotation query options are different for each data source.
 - [Elasticsearch annotation queries]({{< relref "features/datasources/elasticsearch.md#annotations" >}})
 - [InfluxDB annotation queries]({{< relref "features/datasources/influxdb.md#annotations" >}})
 - [Prometheus annotation queries]({{< relref "features/datasources/prometheus.md#annotations" >}})
-- [MySQL annotation queries]({{< relref "features/datasources/mysql.md#annotations" >}})
 - [Postgres annotation queries]({{< relref "features/datasources/postgres.md#annotations" >}})
 - [Loki annotation queries]({{< relref "features/datasources/loki.md#annotations" >}})

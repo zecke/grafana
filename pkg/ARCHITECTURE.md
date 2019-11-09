@@ -1,6 +1,6 @@
 # Backend code structure
 
-Grafanas backend is written in GO using sqlite3/mysql or postgres as storage for dashboards, users etc. When Grafana was born there didnt exist much guides or direction for how to write medium sized application. So there are parts of Grafana code base that didn't quite pan out as we wanted. More about that under current rewrites! :)
+Grafanas backend is written in GO using sqlite3 or postgres as storage for dashboards, users etc. When Grafana was born there didnt exist much guides or direction for how to write medium sized application. So there are parts of Grafana code base that didn't quite pan out as we wanted. More about that under current rewrites! :)
 
 ## Central folders of Grafanas backend
 

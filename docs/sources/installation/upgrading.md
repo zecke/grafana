@@ -38,16 +38,6 @@ If you use sqlite you only need to make a backup of your `grafana.db` file. This
 If you are unsure what database you use and where it is stored check you grafana configuration file. If you
 installed grafana to custom location using a binary tar/zip it is usually in `<grafana_install_dir>/data`.
 
-#### mysql
-
-```bash
-backup:
-> mysqldump -u root -p[root_password] [grafana] > grafana_backup.sql
-
-restore:
-> mysql -u root -p grafana < grafana_backup.sql
-```
-
 #### postgres
 
 ```bash

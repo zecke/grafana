@@ -17,26 +17,6 @@ aliases:
 version: 2
 
 jobs:
-  mysql-integration-test:
-    docker:
-      - image: circleci/golang:1.13.1
-      - image: circleci/mysql:5.6-ram
-        environment:
-          MYSQL_ROOT_PASSWORD: rootpass
-          MYSQL_DATABASE: grafana_tests
-          MYSQL_USER: grafana
-          MYSQL_PASSWORD: password
-    working_directory: /go/src/github.com/grafana/grafana
-    steps:
-        - checkout
-        - run: sudo apt update
-        - run: sudo apt install -y default-mysql-client
-        - run: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
-        - run: cat devenv/docker/blocks/mysql_tests/setup.sql | mysql -h 127.0.0.1 -P 3306 -u root -prootpass
-        - run:
-            name: mysql integration tests
-            command: './scripts/circle-test-mysql.sh'
-
   postgres-integration-test:
     docker:
       - image: circleci/golang:1.13.1
@@ -759,8 +739,6 @@ workflows:
           filters: *filter-only-master
       - test-backend:
           filters: *filter-only-master
-      - mysql-integration-test:
-          filters: *filter-only-master
       - postgres-integration-test:
           filters: *filter-only-master
       - deploy-master:
@@ -771,7 +749,6 @@ workflows:
             - codespell
             - lint-go
             - shellcheck
-            - mysql-integration-test
             - postgres-integration-test
             - build-oss-msi
           filters: *filter-only-master
@@ -784,7 +761,6 @@ workflows:
             - codespell
             - lint-go
             - shellcheck
-            - mysql-integration-test
             - postgres-integration-test
           filters: *filter-only-master
       - deploy-enterprise-master:
@@ -795,7 +771,6 @@ workflows:
             - codespell
             - lint-go
             - shellcheck
-            - mysql-integration-test
             - postgres-integration-test
             - build-all-enterprise
           filters: *filter-only-master
@@ -807,7 +782,6 @@ workflows:
             - codespell
             - lint-go
             - shellcheck
-            - mysql-integration-test
             - postgres-integration-test
           filters: *filter-only-master
       - end-to-end-test:
@@ -840,8 +814,6 @@ workflows:
           filters: *filter-only-release
       - test-backend:
           filters: *filter-only-release
-      - mysql-integration-test:
-          filters: *filter-only-release
       - postgres-integration-test:
           filters: *filter-only-release
       - deploy-release:
@@ -852,7 +824,6 @@ workflows:
             - codespell
             - lint-go
             - shellcheck
-            - mysql-integration-test
             - postgres-integration-test
             - build-oss-msi
           filters: *filter-only-release
@@ -865,7 +836,6 @@ workflows:
             - codespell
             - lint-go
             - shellcheck
-            - mysql-integration-test
             - postgres-integration-test
           filters: *filter-only-release
       - grafana-docker-release:
@@ -877,7 +847,6 @@ workflows:
             - codespell
             - lint-go
             - shellcheck
-            - mysql-integration-test
             - postgres-integration-test
           filters: *filter-only-release
       - release-packages:
@@ -888,7 +857,6 @@ workflows:
             - codespell
             - lint-go
             - shellcheck
-            - mysql-integration-test
             - postgres-integration-test
             - build-oss-msi
           filters: *filter-only-release
@@ -900,7 +868,6 @@ workflows:
             - codespell
             - lint-go
             - shellcheck
-            - mysql-integration-test
             - postgres-integration-test
           filters: *filter-only-release
       - end-to-end-test-release:
@@ -931,8 +898,6 @@ workflows:
             filters: *filter-not-release-or-master
         - test-backend:
             filters: *filter-not-release-or-master
-        - mysql-integration-test:
-            filters: *filter-not-release-or-master
         - postgres-integration-test:
             filters: *filter-not-release-or-master
         - cache-server-test:
@@ -945,7 +910,6 @@ workflows:
               - codespell
               - lint-go
               - shellcheck
-              - mysql-integration-test
               - postgres-integration-test
               - cache-server-test
             filters: *filter-not-release-or-master
@@ -957,7 +921,6 @@ workflows:
               - codespell
               - lint-go
               - shellcheck
-              - mysql-integration-test
               - postgres-integration-test
               - cache-server-test
             filters: *filter-not-release-or-master

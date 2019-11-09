@@ -24,7 +24,6 @@ import (
 	_ "github.com/grafana/grafana/pkg/tsdb/elasticsearch"
 	_ "github.com/grafana/grafana/pkg/tsdb/graphite"
 	_ "github.com/grafana/grafana/pkg/tsdb/influxdb"
-	_ "github.com/grafana/grafana/pkg/tsdb/mysql"
 	_ "github.com/grafana/grafana/pkg/tsdb/opentsdb"
 	_ "github.com/grafana/grafana/pkg/tsdb/postgres"
 	_ "github.com/grafana/grafana/pkg/tsdb/prometheus"
