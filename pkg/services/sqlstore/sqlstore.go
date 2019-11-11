@@ -10,7 +10,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/xorm"
 	"github.com/grafana/grafana/pkg/bus"
 	"github.com/grafana/grafana/pkg/infra/localcache"
@@ -166,28 +165,6 @@ func (ss *SqlStore) buildConnectionString() (string, error) {
 	}
 
 	switch ss.dbCfg.Type {
-	case migrator.MYSQL:
-		protocol := "tcp"
-		if strings.HasPrefix(ss.dbCfg.Host, "/") {
-			protocol = "unix"
-		}
-
-		cnnstr = fmt.Sprintf("%s:%s@%s(%s)/%s?collation=utf8mb4_unicode_ci&allowNativePasswords=true",
-			ss.dbCfg.User, ss.dbCfg.Pwd, protocol, ss.dbCfg.Host, ss.dbCfg.Name)
-
-		if ss.dbCfg.SslMode == "true" || ss.dbCfg.SslMode == "skip-verify" {
-			tlsCert, err := makeCert(ss.dbCfg)
-			if err != nil {
-				return "", err
-			}
-			if err := mysql.RegisterTLSConfig("custom", tlsCert); err != nil {
-				return "", err
-			}
-
-			cnnstr += "&tls=custom"
-		}
-
-		cnnstr += ss.buildExtraConnectionString('&')
 	case migrator.POSTGRES:
 		addr, err := util.SplitHostPortDefault(ss.dbCfg.Host, "127.0.0.1", "5432")
 		if err != nil {
@@ -327,10 +304,6 @@ func InitTestDB(t ITestDB) *SqlStore {
 	}
 
 	switch dbType {
-	case "mysql":
-		if _, err := sec.NewKey("connection_string", sqlutil.TestDB_Mysql.ConnStr); err != nil {
-			t.Fatalf("Failed to create key: %s", err)
-		}
 	case "postgres":
 		if _, err := sec.NewKey("connection_string", sqlutil.TestDB_Postgres.ConnStr); err != nil {
 			t.Fatalf("Failed to create key: %s", err)
@@ -364,14 +337,6 @@ func InitTestDB(t ITestDB) *SqlStore {
 	sqlstore.engine.TZLocation = time.UTC
 
 	return sqlstore
-}
-
-func IsTestDbMySql() bool {
-	if db, present := os.LookupEnv("GRAFANA_TEST_DB"); present {
-		return db == migrator.MYSQL
-	}
-
-	return false
 }
 
 func IsTestDbPostgres() bool {

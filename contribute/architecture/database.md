@@ -4,7 +4,6 @@ Grafana uses a database to persist settings between restarts. In fact, if you do
 
 Grafana supports the [following databases](https://grafana.com/docs/installation/requirements/#database):
 
-- [MySQL](https://www.mysql.com/)
 - [PostgreSQL](https://www.postgresql.org/)
 - [SQLite3](https://www.sqlite.org/)
 

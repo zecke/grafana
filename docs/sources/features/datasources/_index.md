@@ -30,7 +30,6 @@ The following data sources are officially supported:
 * [Loki]({{< relref "loki.md" >}})
 * [Microsoft SQL Server (MSSQL)]({{< relref "mssql.md" >}})
 * [Mixed]({{< relref "mixed.md" >}})
-* [MySQL]({{< relref "mysql.md" >}})
 * [OpenTSDB]({{< relref "opentsdb.md" >}})
 * [PostgreSQL]({{< relref "postgres.md" >}})
 * [Prometheus]({{< relref "prometheus.md" >}})

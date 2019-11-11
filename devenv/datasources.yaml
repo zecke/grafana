@@ -168,22 +168,6 @@ datasources:
       esVersion: 70
       timeInterval: "10s"
 
-  - name: gdev-mysql
-    type: mysql
-    url: localhost:3306
-    database: grafana
-    user: grafana
-    secureJsonData:
-      password: password
-
-  - name: gdev-mysql-ds-tests
-    type: mysql
-    url: localhost:3306
-    database: grafana_ds_tests
-    user: grafana
-    secureJsonData:
-      password: password
-
   - name: gdev-mssql
     type: mssql
     url: localhost:1433

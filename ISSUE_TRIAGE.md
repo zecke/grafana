@@ -91,7 +91,7 @@ Should explain what happened, what was expected and how to reproduce it together
 - User OS & Browser + versions
 - Using docker + what environment
 - Which plugins
-- Configuration database in use (sqlite, mysql, postgres)
+- Configuration database in use (sqlite, postgres)
 - Reverse proxy in front of Grafana, what version and configuration
 - Non-default configuration settings
 - Development environment like Go and Node versions, if applicable

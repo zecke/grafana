@@ -17,12 +17,6 @@ type sqlStoreTest struct {
 
 var sqlStoreTestCases = []sqlStoreTest{
 	{
-		name:          "MySQL IPv4",
-		dbType:        "mysql",
-		dbHost:        "1.2.3.4:5678",
-		connStrValues: []string{"tcp(1.2.3.4:5678)"},
-	},
-	{
 		name:          "Postgres IPv4",
 		dbType:        "postgres",
 		dbHost:        "1.2.3.4:5678",
@@ -35,28 +29,10 @@ var sqlStoreTestCases = []sqlStoreTest{
 		connStrValues: []string{"host=1.2.3.4", "port=5432"},
 	},
 	{
-		name:          "MySQL IPv4 (Default Port)",
-		dbType:        "mysql",
-		dbHost:        "1.2.3.4",
-		connStrValues: []string{"tcp(1.2.3.4)"},
-	},
-	{
-		name:          "MySQL IPv6",
-		dbType:        "mysql",
-		dbHost:        "[fe80::24e8:31b2:91df:b177]:1234",
-		connStrValues: []string{"tcp([fe80::24e8:31b2:91df:b177]:1234)"},
-	},
-	{
 		name:          "Postgres IPv6",
 		dbType:        "postgres",
 		dbHost:        "[fe80::24e8:31b2:91df:b177]:1234",
 		connStrValues: []string{"host=fe80::24e8:31b2:91df:b177", "port=1234"},
-	},
-	{
-		name:          "MySQL IPv6 (Default Port)",
-		dbType:        "mysql",
-		dbHost:        "[::1]",
-		connStrValues: []string{"tcp([::1])"},
 	},
 	{
 		name:          "Postgres IPv6 (Default Port)",

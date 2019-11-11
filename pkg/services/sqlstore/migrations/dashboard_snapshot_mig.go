@@ -49,10 +49,6 @@ func addDashboardSnapshotMigrations(mg *Migrator) {
 	mg.AddMigration("create dashboard_snapshot table v5 #2", NewAddTableMigration(snapshotV5))
 	addTableIndicesMigrations(mg, "v5", snapshotV5)
 
-	// change column type of dashboard
-	mg.AddMigration("alter dashboard_snapshot to mediumtext v2", NewRawSqlMigration("").
-		Mysql("ALTER TABLE dashboard_snapshot MODIFY dashboard MEDIUMTEXT;"))
-
 	mg.AddMigration("Update dashboard_snapshot table charset", NewTableCharsetMigration("dashboard_snapshot", []*Column{
 		{Name: "name", Type: DB_NVarchar, Length: 255, Nullable: false},
 		{Name: "key", Type: DB_NVarchar, Length: 190, Nullable: false},

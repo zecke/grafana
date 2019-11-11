@@ -52,8 +52,4 @@ SELECT
 	dashboard.data
 FROM dashboard;`
 	mg.AddMigration("save existing dashboard data in dashboard_version table v1", NewRawSqlMigration(rawSQL))
-
-	// change column type of dashboard_version.data
-	mg.AddMigration("alter dashboard_version.data to mediumtext v1", NewRawSqlMigration("").
-		Mysql("ALTER TABLE dashboard_version MODIFY data MEDIUMTEXT;"))
 }
