@@ -76,8 +76,6 @@ source /etc/profile.d/rvm.sh
 echo "Packaging"
 go run build.go -goos linux -pkg-arch amd64 ${OPT} package-only
 go run build.go -goos linux -pkg-arch amd64 -libc musl ${OPT} -skipRpm -skipDeb package-only
-#removing amd64 phantomjs bin for armv7/arm64 packages
-rm tools/phantomjs/phantomjs
 
 # build only amd64 for enterprise
 if echo "$EXTRA_OPTS" | grep -vq enterprise ; then
