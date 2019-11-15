@@ -40,6 +40,5 @@ func addPreferencesMigrations(mg *Migrator) {
 	}))
 
 	mg.AddMigration("Update team_id column values in preferences", NewRawSqlMigration("").
-		Sqlite("UPDATE preferences SET team_id=0 WHERE team_id IS NULL;").
-		Postgres("UPDATE preferences SET team_id=0 WHERE team_id IS NULL;"))
+		Sqlite("UPDATE preferences SET team_id=0 WHERE team_id IS NULL;"))
 }

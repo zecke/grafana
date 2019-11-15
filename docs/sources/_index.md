@@ -84,10 +84,6 @@ aliases = ["/v1.1", "/guides/reference/admin", "/v3.1"]
       <img src="/img/docs/logos/icon_influxdb.svg" >
       <h5>InfluxDB</h5>
     </a>
-    <a href="{{< relref "features/datasources/prometheus.md" >}}" class="nav-cards__item nav-cards__item--ds">
-      <img src="/img/docs/logos/icon_prometheus.svg" >
-      <h5>Prometheus</h5>
-    </a>
     <a href="{{< relref "features/datasources/stackdriver.md" >}}" class="nav-cards__item nav-cards__item--ds">
       <img src="/img/docs/logos/icon_stackdriver.svg">
       <h5>Google Stackdriver</h5>
@@ -103,10 +99,6 @@ aliases = ["/v1.1", "/guides/reference/admin", "/v3.1"]
     <a href="{{< relref "features/datasources/loki.md" >}}" class="nav-cards__item nav-cards__item--ds">
       <img src="/img/docs/logos/icon_loki.svg">
       <h5>Loki</h5>
-    </a>
-    <a href="{{< relref "features/datasources/postgres.md" >}}" class="nav-cards__item nav-cards__item--ds">
-      <img src="/img/docs/logos/icon_postgres.svg" >
-      <h5>Postgres</h5>
     </a>
     <a href="{{< relref "features/datasources/mssql.md" >}}" class="nav-cards__item nav-cards__item--ds">
       <img src="/img/docs/logos/sql_server_logo.svg">

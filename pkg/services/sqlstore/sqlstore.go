@@ -3,7 +3,6 @@ package sqlstore
 import (
 	"context"
 	"fmt"
-	"net/url"
 	"os"
 	"path"
 	"path/filepath"
@@ -22,9 +21,6 @@ import (
 	"github.com/grafana/grafana/pkg/services/sqlstore/sqlutil"
 	"github.com/grafana/grafana/pkg/setting"
 	_ "github.com/grafana/grafana/pkg/tsdb/mssql"
-	"github.com/grafana/grafana/pkg/util"
-	"github.com/grafana/grafana/pkg/util/errutil"
-	_ "github.com/lib/pq"
 )
 
 var (
@@ -37,11 +33,6 @@ var (
 const ContextSessionName = "db-session"
 
 func init() {
-	// This change will make xorm use an empty default schema for postgres and
-	// by that mimic the functionality of how it was functioning before
-	// xorm's changes above.
-	xorm.DefaultPostgresSchema = ""
-
 	registry.Register(&registry.Descriptor{
 		Name:         "SqlStore",
 		Instance:     &SqlStore{},
@@ -165,21 +156,6 @@ func (ss *SqlStore) buildConnectionString() (string, error) {
 	}
 
 	switch ss.dbCfg.Type {
-	case migrator.POSTGRES:
-		addr, err := util.SplitHostPortDefault(ss.dbCfg.Host, "127.0.0.1", "5432")
-		if err != nil {
-			return "", errutil.Wrapf(err, "Invalid host specifier '%s'", ss.dbCfg.Host)
-		}
-
-		if ss.dbCfg.Pwd == "" {
-			ss.dbCfg.Pwd = "''"
-		}
-		if ss.dbCfg.User == "" {
-			ss.dbCfg.User = "''"
-		}
-		cnnstr = fmt.Sprintf("user=%s password=%s host=%s port=%s dbname=%s sslmode=%s sslcert=%s sslkey=%s sslrootcert=%s", ss.dbCfg.User, ss.dbCfg.Pwd, addr.Host, addr.Port, ss.dbCfg.Name, ss.dbCfg.SslMode, ss.dbCfg.ClientCertPath, ss.dbCfg.ClientKeyPath, ss.dbCfg.CaCertPath)
-
-		cnnstr += ss.buildExtraConnectionString(' ')
 	case migrator.SQLITE:
 		// special case for tests
 		if !filepath.IsAbs(ss.dbCfg.Path) {
@@ -231,38 +207,16 @@ func (ss *SqlStore) getEngine() (*xorm.Engine, error) {
 func (ss *SqlStore) readConfig() {
 	sec := ss.Cfg.Raw.Section("database")
 
-	cfgURL := sec.Key("url").String()
-	if len(cfgURL) != 0 {
-		dbURL, _ := url.Parse(cfgURL)
-		ss.dbCfg.Type = dbURL.Scheme
-		ss.dbCfg.Host = dbURL.Host
-
-		pathSplit := strings.Split(dbURL.Path, "/")
-		if len(pathSplit) > 1 {
-			ss.dbCfg.Name = pathSplit[1]
-		}
-
-		userInfo := dbURL.User
-		if userInfo != nil {
-			ss.dbCfg.User = userInfo.Username()
-			ss.dbCfg.Pwd, _ = userInfo.Password()
-		}
-
-		ss.dbCfg.UrlQueryParams = dbURL.Query()
-	} else {
-		ss.dbCfg.Type = sec.Key("type").String()
-		ss.dbCfg.Host = sec.Key("host").String()
-		ss.dbCfg.Name = sec.Key("name").String()
-		ss.dbCfg.User = sec.Key("user").String()
-		ss.dbCfg.ConnectionString = sec.Key("connection_string").String()
-		ss.dbCfg.Pwd = sec.Key("password").String()
-	}
+	ss.dbCfg.Type = sec.Key("type").String()
+	ss.dbCfg.Name = sec.Key("name").String()
+	ss.dbCfg.User = sec.Key("user").String()
+	ss.dbCfg.ConnectionString = sec.Key("connection_string").String()
+	ss.dbCfg.Pwd = sec.Key("password").String()
 
 	ss.dbCfg.MaxOpenConn = sec.Key("max_open_conn").MustInt(0)
 	ss.dbCfg.MaxIdleConn = sec.Key("max_idle_conn").MustInt(2)
 	ss.dbCfg.ConnMaxLifetime = sec.Key("conn_max_lifetime").MustInt(14400)
 
-	ss.dbCfg.SslMode = sec.Key("ssl_mode").String()
 	ss.dbCfg.CaCertPath = sec.Key("ca_cert_path").String()
 	ss.dbCfg.ClientKeyPath = sec.Key("client_key_path").String()
 	ss.dbCfg.ClientCertPath = sec.Key("client_cert_path").String()
@@ -303,15 +257,8 @@ func InitTestDB(t ITestDB) *SqlStore {
 		t.Fatalf("Failed to create key: %s", err)
 	}
 
-	switch dbType {
-	case "postgres":
-		if _, err := sec.NewKey("connection_string", sqlutil.TestDB_Postgres.ConnStr); err != nil {
-			t.Fatalf("Failed to create key: %s", err)
-		}
-	default:
-		if _, err := sec.NewKey("connection_string", sqlutil.TestDB_Sqlite3.ConnStr); err != nil {
-			t.Fatalf("Failed to create key: %s", err)
-		}
+	if _, err := sec.NewKey("connection_string", sqlutil.TestDB_Sqlite3.ConnStr); err != nil {
+		t.Fatalf("Failed to create key: %s", err)
 	}
 
 	// need to get engine to clean db before we init
@@ -339,22 +286,12 @@ func InitTestDB(t ITestDB) *SqlStore {
 	return sqlstore
 }
 
-func IsTestDbPostgres() bool {
-	if db, present := os.LookupEnv("GRAFANA_TEST_DB"); present {
-		return db == migrator.POSTGRES
-	}
-
-	return false
-}
-
 type DatabaseConfig struct {
 	Type             string
-	Host             string
 	Name             string
 	User             string
 	Pwd              string
 	Path             string
-	SslMode          string
 	CaCertPath       string
 	ClientKeyPath    string
 	ClientCertPath   string

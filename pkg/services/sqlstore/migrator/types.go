@@ -8,9 +8,8 @@ import (
 )
 
 const (
-	POSTGRES = "postgres"
-	SQLITE   = "sqlite3"
-	MSSQL    = "mssql"
+	SQLITE = "sqlite3"
+	MSSQL  = "mssql"
 )
 
 type Migration interface {

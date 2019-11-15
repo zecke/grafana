@@ -22,8 +22,7 @@ func addUserAuthMigrations(mg *Migrator) {
 	// add indices
 	addTableIndicesMigrations(mg, "v1", userAuthV1)
 
-	mg.AddMigration("alter user_auth.auth_id to length 190", NewRawSqlMigration("").
-		Postgres("ALTER TABLE user_auth ALTER COLUMN auth_id TYPE VARCHAR(190);"))
+	mg.AddMigration("alter user_auth.auth_id to length 190", NewRawSqlMigration(""))
 
 	mg.AddMigration("Add OAuth access token to user_auth", NewAddColumnMigration(userAuthV1, &Column{
 		Name: "o_auth_access_token", Type: DB_Text, Nullable: true,

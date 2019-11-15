@@ -56,8 +56,6 @@ func NewDialect(engine *xorm.Engine) Dialect {
 	switch name {
 	case SQLITE:
 		return NewSqlite3Dialect(engine)
-	case POSTGRES:
-		return NewPostgresDialect(engine)
 	}
 
 	panic("Unsupported database type: " + name)

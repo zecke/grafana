@@ -149,7 +149,7 @@ By default Grafana will log to `/var/log/grafana`
 
 The default configuration specifies a sqlite3 database located at
 `/var/lib/grafana/grafana.db`. Please backup this database before
-upgrades. You can also use MySQL or Postgres as the Grafana database, as detailed on [the configuration page]({{< relref "configuration.md#database" >}}).
+upgrades.
 
 ## Configuration
 
