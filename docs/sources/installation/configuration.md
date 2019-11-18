@@ -199,23 +199,14 @@ Grafana needs a database to store users and dashboards (and other
 things). By default it is configured to use `sqlite3` which is an
 embedded database (included in the main Grafana binary).
 
-### url
-
-Use either URL or the other fields below to configure the database
-Example: `postgres://user:secret@host:port/database`
-
 ### type
 
-Either `postgres` or `sqlite3`, it's your choice.
+`sqlite3`, no choice.
 
 ### path
 
 Only applicable for `sqlite3` database. The file path where the database
 will be stored.
-
-### host
-
-Only applicable to Postgres. Includes IP or hostname and port or in case of Unix sockets the path to it.
 
 ### name
 
@@ -230,10 +221,6 @@ The database user (not applicable for `sqlite3`).
 
 The database user's password (not applicable for `sqlite3`). If the password contains `#` or `;` you have to wrap it with triple quotes. For example `"""#password;"""`
 
-### ssl_mode
-
-For Postgres, use either `disable`, `require` or `verify-full`.
-
 ### ca_cert_path
 
 The path to the CA certificate to use. On many Linux systems, certs can be found in `/etc/ssl/certs`.
@@ -245,10 +232,6 @@ The path to the client key. Only if server requires client authentication.
 ### client_cert_path
 
 The path to the client cert. Only if server requires client authentication.
-
-### server_cert_name
-
-The common name field of the certificate used by the `postgres` server. Not necessary if `ssl_mode` is set to `skip-verify`.
 
 ### max_idle_conn
 The maximum number of connections in the idle connection pool.
@@ -726,7 +709,7 @@ Please note that these options have been removed.
 
 ### provider
 
-Valid values are `memory`, `file`, `postgres`, `memcache` or `redis`. Default is `file`.
+Valid values are `memory`, `file`, `memcache` or `redis`. Default is `file`.
 
 ### provider_config
 
@@ -734,11 +717,8 @@ This option should be configured differently depending on what type of
 session provider you have configured.
 
 - **file:** session file path, e.g. `data/sessions`
-- **postgres:** ex:  `user=a password=b host=localhost port=5432 dbname=c sslmode=verify-full`
 - **memcache:** ex:  `127.0.0.1:11211`
 - **redis:** ex: `addr=127.0.0.1:6379,pool_size=100,prefix=grafana`. For Unix socket, use for example: `network=unix,addr=/var/run/redis/redis.sock,pool_size=100,db=grafana`
-
-Postgres valid `sslmode` are `disable`, `require`, `verify-ca`, and `verify-full` (default).
 
 ### cookie_name
 

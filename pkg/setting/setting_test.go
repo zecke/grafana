@@ -71,7 +71,7 @@ func TestLoadingSettings(t *testing.T) {
 		})
 
 		Convey("Should return an error when url is invalid", func() {
-			os.Setenv("GF_DATABASE_URL", "postgres.%31://grafana:secret@postgres:5432/grafana")
+			os.Setenv("GF_DATABASE_URL", "ingres.%31://grafana:secret@ingres:5432/grafana")
 
 			cfg := NewCfg()
 			err := cfg.Load(&CommandLineArgs{HomePath: "../../"})

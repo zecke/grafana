@@ -93,7 +93,6 @@ Content-Type: application/json
     "name":"grafana",
     "password":"************",
     "path":"grafana.db",
-    "ssl_mode":"disable",
     "type":"sqlite3",
     "user":"root"
   },

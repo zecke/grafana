@@ -36,5 +36,5 @@ make devenv sources=influxdb,prometheus2,elastic5
 Some of the blocks support dynamic change of the image version used in the Docker file. The signature looks like this: 
 
 ```bash
-make devenv sources=postgres,openldap postgres_version=9.2
+make devenv sources=openldap
 ```

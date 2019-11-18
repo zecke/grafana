@@ -112,9 +112,9 @@ build-docker-full:
 
 ifeq ($(sources),)
 devenv:
-	@printf 'You have to define sources for this command \nexample: make devenv sources=postgres,openldap\n'
+	@printf 'You have to define sources for this command \nexample: make devenv sources=openldap\n'
 else
-devenv: devenv-down ## Start optional services, e.g. postgres, prometheus, and elasticsearch.
+devenv: devenv-down ## Start optional services, e.g. prometheus, and elasticsearch.
 	$(eval targets := $(shell echo '$(sources)' | tr "," " "))
 
 	@cd devenv; \

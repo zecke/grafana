@@ -66,10 +66,6 @@ func (m *RawSqlMigration) Sqlite(sql string) *RawSqlMigration {
 	return m.Set(SQLITE, sql)
 }
 
-func (m *RawSqlMigration) Postgres(sql string) *RawSqlMigration {
-	return m.Set(POSTGRES, sql)
-}
-
 func (m *RawSqlMigration) Mssql(sql string) *RawSqlMigration {
 	return m.Set(MSSQL, sql)
 }

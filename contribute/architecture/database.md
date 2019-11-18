@@ -4,7 +4,6 @@ Grafana uses a database to persist settings between restarts. In fact, if you do
 
 Grafana supports the [following databases](https://grafana.com/docs/installation/requirements/#database):
 
-- [PostgreSQL](https://www.postgresql.org/)
 - [SQLite3](https://www.sqlite.org/)
 
 Grafana uses the [XORM](https://xorm.io) framework for persisting objects to the database. For more information on how to use XORM, refer to the [documentation](http://gobook.io/read/github.com/go-xorm/manual-en-US/).
