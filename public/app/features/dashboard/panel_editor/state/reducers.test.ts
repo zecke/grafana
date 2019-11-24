@@ -5,7 +5,7 @@ import { PanelEditorTabIds, PanelEditorTab, panelEditorInitCompleted, panelEdito
 describe('panelEditorReducer', () => {
   describe('when panelEditorInitCompleted is dispatched', () => {
     it('then state should be correct', () => {
-      const activeTab = PanelEditorTabIds.Alert;
+      const activeTab = PanelEditorTabIds.Advanced;
       const tabs: PanelEditorTab[] = [
         getPanelEditorTab(PanelEditorTabIds.Queries),
         getPanelEditorTab(PanelEditorTabIds.Visualization),
@@ -20,7 +20,7 @@ describe('panelEditorReducer', () => {
 
   describe('when panelEditorCleanUp is dispatched', () => {
     it('then state should be intialState', () => {
-      const activeTab = PanelEditorTabIds.Alert;
+      const activeTab = PanelEditorTabIds.Advanced;
       const tabs: PanelEditorTab[] = [
         getPanelEditorTab(PanelEditorTabIds.Queries),
         getPanelEditorTab(PanelEditorTabIds.Visualization),

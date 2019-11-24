@@ -3,14 +3,10 @@ import { PanelEditorTabIds, PanelEditorTab, panelEditorInitCompleted } from './t
 import { ThunkResult } from '../../../../types';
 import { updateLocation } from '../../../../core/actions';
 
-export const refreshPanelEditor = (props: {
-  hasQueriesTab?: boolean;
-  usesGraphPlugin?: boolean;
-  alertingEnabled?: boolean;
-}): ThunkResult<void> => {
+export const refreshPanelEditor = (props: { hasQueriesTab?: boolean }): ThunkResult<void> => {
   return async (dispatch, getState) => {
     let activeTab = getState().panelEditor.activeTab || PanelEditorTabIds.Queries;
-    const { hasQueriesTab, usesGraphPlugin, alertingEnabled } = props;
+    const { hasQueriesTab } = props;
 
     const tabs: PanelEditorTab[] = [
       getPanelEditorTab(PanelEditorTabIds.Queries),
@@ -26,10 +22,6 @@ export const refreshPanelEditor = (props: {
       if (activeTab === PanelEditorTabIds.Queries) {
         activeTab = PanelEditorTabIds.Visualization;
       }
-    }
-
-    if (alertingEnabled && usesGraphPlugin) {
-      tabs.push(getPanelEditorTab(PanelEditorTabIds.Alert));
     }
 
     dispatch(panelEditorInitCompleted({ activeTab, tabs }));

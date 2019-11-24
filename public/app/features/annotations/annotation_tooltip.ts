@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import $ from 'jquery';
 import coreModule from 'app/core/core_module';
-import alertDef from '../alerting/state/alertDef';
 import { DashboardSrv } from '../dashboard/services/DashboardSrv';
 import { ContextSrv } from 'app/core/services/context_srv';
 
@@ -34,17 +33,8 @@ export function annotationTooltipDirective(
       const dashboard = dashboardSrv.getCurrent();
 
       let tooltip = '<div class="graph-annotation">';
-      let titleStateClass = '';
 
-      if (event.alertId) {
-        const stateModel = alertDef.getStateDisplayModel(event.newState);
-        titleStateClass = stateModel.stateClass;
-        title = `<i class="${stateModel.iconClass}"></i> ${stateModel.text}`;
-        text = alertDef.getAlertAnnotationInfo(event);
-        if (event.text) {
-          text = text + '<br />' + event.text;
-        }
-      } else if (title) {
+      if (title) {
         text = title + '<br />' + (_.isString(text) ? text : '');
         title = '';
       }
@@ -56,7 +46,7 @@ export function annotationTooltipDirective(
         }" /></div>`;
       }
       header += `
-          <span class="graph-annotation__title ${titleStateClass}">${sanitizeString(title)}</span>
+          <span class="graph-annotation__title">${sanitizeString(title)}</span>
           <span class="graph-annotation__time">${dashboard.formatDate(event.min)}</span>
       `;
 
