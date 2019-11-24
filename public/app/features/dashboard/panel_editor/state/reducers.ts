@@ -1,5 +1,5 @@
 import { reducerFactory } from '../../../../core/redux';
-import { panelEditorCleanUp, panelEditorInitCompleted } from './actions';
+import { panelEditorCleanUp, panelEditorInitCompleted } from './types';
 
 export interface PanelEditorTab {
   id: string;

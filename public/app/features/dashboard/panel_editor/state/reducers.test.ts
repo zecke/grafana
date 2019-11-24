@@ -1,6 +1,6 @@
 import { reducerTester } from '../../../../../test/core/redux/reducerTester';
 import { initialState, panelEditorReducer, PanelEditorTabIds, PanelEditorTab, getPanelEditorTab } from './reducers';
-import { panelEditorInitCompleted, panelEditorCleanUp } from './actions';
+import { panelEditorInitCompleted, panelEditorCleanUp } from './types';
 
 describe('panelEditorReducer', () => {
   describe('when panelEditorInitCompleted is dispatched', () => {
