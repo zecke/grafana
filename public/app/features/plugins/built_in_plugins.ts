@@ -17,8 +17,6 @@ const mixedPlugin = async () =>
   await import(/* webpackChunkName: "mixedPlugin" */ 'app/plugins/datasource/mixed/module');
 const prometheusPlugin = async () =>
   await import(/* webpackChunkName: "prometheusPlugin" */ 'app/plugins/datasource/prometheus/module');
-const mssqlPlugin = async () =>
-  await import(/* webpackChunkName: "mssqlPlugin" */ 'app/plugins/datasource/mssql/module');
 const testDataDSPlugin = async () =>
   await import(/* webpackChunkName: "testDataDSPlugin" */ 'app/plugins/datasource/testdata/module');
 const inputDatasourcePlugin = async () =>
@@ -51,7 +49,6 @@ const builtInPlugins: any = {
   'app/plugins/datasource/influxdb/module': influxdbPlugin,
   'app/plugins/datasource/loki/module': lokiPlugin,
   'app/plugins/datasource/mixed/module': mixedPlugin,
-  'app/plugins/datasource/mssql/module': mssqlPlugin,
   'app/plugins/datasource/prometheus/module': prometheusPlugin,
   'app/plugins/datasource/testdata/module': testDataDSPlugin,
   'app/plugins/datasource/input/module': inputDatasourcePlugin,
