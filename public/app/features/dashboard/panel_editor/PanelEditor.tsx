@@ -12,8 +12,8 @@ import { AlertTab } from '../../alerting/AlertTab';
 import { PanelModel } from '../state/PanelModel';
 import { DashboardModel } from '../state/DashboardModel';
 import { StoreState } from '../../../types';
-import { PanelEditorTab, PanelEditorTabIds } from './state/reducers';
-import { changePanelEditorTab, panelEditorCleanUp, refreshPanelEditor } from './state/actions';
+import { PanelEditorTab, PanelEditorTabIds, panelEditorCleanUp } from './state/types';
+import { changePanelEditorTab, refreshPanelEditor } from './state/actions';
 import { getActiveTabAndTabs } from './state/selectors';
 
 interface PanelEditorProps {

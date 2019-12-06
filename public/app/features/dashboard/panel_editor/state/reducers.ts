@@ -1,24 +1,11 @@
 import { reducerFactory } from '../../../../core/redux';
-import { panelEditorCleanUp, panelEditorInitCompleted } from './actions';
-
-export interface PanelEditorTab {
-  id: string;
-  text: string;
-}
-
-export enum PanelEditorTabIds {
-  Queries = 'queries',
-  Visualization = 'visualization',
-  Advanced = 'advanced',
-  Alert = 'alert',
-}
-
-export const panelEditorTabTexts = {
-  [PanelEditorTabIds.Queries]: 'Queries',
-  [PanelEditorTabIds.Visualization]: 'Visualization',
-  [PanelEditorTabIds.Advanced]: 'General',
-  [PanelEditorTabIds.Alert]: 'Alert',
-};
+import {
+  panelEditorCleanUp,
+  panelEditorInitCompleted,
+  panelEditorTabTexts,
+  PanelEditorTab,
+  PanelEditorTabIds,
+} from './types';
 
 export const getPanelEditorTab = (tabId: PanelEditorTabIds): PanelEditorTab => {
   return {

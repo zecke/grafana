@@ -17,7 +17,8 @@ import { DashboardModel } from '../dashboard/state/DashboardModel';
 import { PanelModel } from '../dashboard/state/PanelModel';
 import { TestRuleResult } from './TestRuleResult';
 import { AppNotificationSeverity, StoreState } from 'app/types';
-import { PanelEditorTabIds, getPanelEditorTab } from '../dashboard/panel_editor/state/reducers';
+import { getPanelEditorTab } from '../dashboard/panel_editor/state/reducers';
+import { PanelEditorTabIds } from '../dashboard/panel_editor/state/types';
 import { changePanelEditorTab } from '../dashboard/panel_editor/state/actions';
 import { CoreEvents } from 'app/types';
 

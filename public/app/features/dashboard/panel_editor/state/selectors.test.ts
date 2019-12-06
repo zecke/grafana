@@ -1,6 +1,7 @@
 import { getActiveTabAndTabs } from './selectors';
 import { LocationState } from '../../../../types';
-import { getPanelEditorTab, PanelEditorState, PanelEditorTab, PanelEditorTabIds } from './reducers';
+import { getPanelEditorTab, PanelEditorState } from './reducers';
+import { PanelEditorTab, PanelEditorTabIds } from './types';
 
 describe('getActiveTabAndTabs', () => {
   describe('when called and location state contains tab', () => {
