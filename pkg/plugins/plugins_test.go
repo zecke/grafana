@@ -23,7 +23,7 @@ func TestPluginScans(t *testing.T) {
 		So(len(Panels), ShouldBeGreaterThan, 1)
 
 		Convey("Should set module automatically", func() {
-			So(DataSources["graphite"].Module, ShouldEqual, "app/plugins/datasource/graphite/module")
+			So(DataSources["prometheus"].Module, ShouldEqual, "app/plugins/datasource/prometheus/module")
 		})
 	})
 

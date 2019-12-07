@@ -1,5 +1,3 @@
-const graphitePlugin = async () =>
-  await import(/* webpackChunkName: "graphitePlugin" */ 'app/plugins/datasource/graphite/module');
 const dashboardDSPlugin = async () =>
   await import(/* webpackChunkName "dashboardDSPlugin" */ 'app/plugins/datasource/dashboard/module');
 const elasticsearchPlugin = async () =>
@@ -38,7 +36,6 @@ import * as gettingStartedPanel from 'app/plugins/panel/gettingstarted/module';
 const exampleApp = async () => await import(/* webpackChunkName: "exampleApp" */ 'app/plugins/app/example-app/module');
 
 const builtInPlugins: any = {
-  'app/plugins/datasource/graphite/module': graphitePlugin,
   'app/plugins/datasource/dashboard/module': dashboardDSPlugin,
   'app/plugins/datasource/elasticsearch/module': elasticsearchPlugin,
   'app/plugins/datasource/opentsdb/module': opentsdbPlugin,

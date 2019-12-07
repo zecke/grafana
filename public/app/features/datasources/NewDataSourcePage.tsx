@@ -40,7 +40,6 @@ class NewDataSourcePage extends PureComponent<Props> {
 
   sortingRules: { [id: string]: number } = {
     prometheus: 100,
-    graphite: 95,
     loki: 90,
     gcloud: -1,
   };

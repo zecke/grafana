@@ -72,10 +72,6 @@ aliases = ["/v1.1", "/guides/reference/admin", "/v3.1"]
 
 <h2>Data Source Guides</h2>
 <div class="nav-cards">
-    <a href="{{< relref "features/datasources/graphite.md" >}}" class="nav-cards__item nav-cards__item--ds">
-      <img src="/img/docs/logos/icon_graphite.svg" >
-      <h5>Graphite</h5>
-    </a>
     <a href="{{< relref "features/datasources/elasticsearch.md" >}}" class="nav-cards__item nav-cards__item--ds">
       <img src="/img/docs/logos/icon_elasticsearch.svg" >
       <h5>Elasticsearch</h5>
