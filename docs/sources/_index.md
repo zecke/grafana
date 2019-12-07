@@ -88,10 +88,6 @@ aliases = ["/v1.1", "/guides/reference/admin", "/v3.1"]
       <img src="/img/docs/logos/icon_stackdriver.svg">
       <h5>Google Stackdriver</h5>
     </a>
-    <a href="{{< relref "features/datasources/cloudwatch.md" >}}" class="nav-cards__item nav-cards__item--ds">
-      <img src="/img/docs/logos/icon_cloudwatch.svg">
-      <h5>AWS CloudWatch</h5>
-    </a>
     <a href="{{< relref "features/datasources/azuremonitor.md" >}}" class="nav-cards__item nav-cards__item--ds">
       <img src="/img/docs/logos/icon_azure_monitor.jpg">
       <h5>Azure Monitor</h5>
